@@ -10,8 +10,11 @@
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/ol@v7.2.2/dist/ol.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.2.2/ol.css">
+    <link rel="stylesheet" type="text/css" href="/css/range.css">
 </head>
 <body>
     <div id="map"></div>
+
+    <script src="/js/range/range.js"></script>
 </body>
 </html>

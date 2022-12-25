@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.side.range.mapper.rangeMapper">
+  <select id="selectDrivingDistance" parameterType="hashMap" resultType="hashMap">
+    SELECT
+      st_astext(
+        ST_MAKEPOLYGON(
+          ST_EXTERIORRING(
+            ST_UNION(
+              ST_BUFFER(ml.geom, 0.002, 2)
+            )
+          )
+        )
+       ) as ddGeom
+    FROM (SELECT *
+          FROM
+            PGR_DRIVINGDISTANCE(
+              'SELECT
+                  link_id::bigint as id,
+                  f_node::bigint as source,
+                  t_node::bigint as target,
+                  length::double precision AS cost
+               FROM
+                     shp.moct_link'::text
+              , (select node_id::bigint
+                 from shp.moct_node
+                 where st_dwithin(geom, st_geometryfromtext(#{wktPoint}, 4326), 3000, false)
+                 ORDER BY ST_Distance(geom, st_geometryfromtext(#{wktPoint}, 4326))
+                 limit 1)
+              , #{range}::double precision
+              , false
+              )) dd
+       , shp.moct_link ml
+    WHERE ml.t_node = dd.node::character varying;
+  </select>
+</mapper>
