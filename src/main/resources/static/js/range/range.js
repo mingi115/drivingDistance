@@ -55,6 +55,10 @@ function reqDrivingDistance(coord){
     const feature = wktFormatter.readFeature(geom);
     vectorSource.clear();
     vectorSource.addFeature(feature);
-    console.log(feature.getExtent())
+    map.getView().fit(
+        feature.getGeometry().getExtent(),
+        {
+          duration:1000,
+        });
   });
 }
