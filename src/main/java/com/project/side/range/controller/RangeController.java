@@ -27,8 +27,6 @@ public class RangeController {
     @PostMapping(value = "/reqDrivingDistance")
     @ResponseBody
     public HashMap<String, Object> reqDrivingDistance(@RequestBody HashMap<String, Object> paramMap){
-        logger.debug(paramMap.toString());
-        HashMap<String, Object> result = rangeDao.selectDrivingDistance(paramMap);
-        return result;
+        return rangeDao.selectDrivingDistance(paramMap);
     }
 }
