@@ -22,24 +22,36 @@ const map = new ol.Map({
   }),
   layers: [
     new ol.layer.Tile({
-      source: new ol.source.OSM(),
+      source: new ol.source.OSM({
+        attributions : false
+      }),
     }),
     vertorLayer
   ],
   target: 'map',
 });
 
+const rangeInput = document.getElementById('range-input');
+let targetCoord;
+rangeInput.addEventListener('change',function(){
+  if(!targetCoord) return;
+  reqDrivingDistance(targetCoord);
+})
 map.on('click', function(e){
-  const evtCoord = e.coordinate;
-  reqDrivingDistance(evtCoord);
+  targetCoord = e.coordinate;
+  reqDrivingDistance(targetCoord);
 })
 
 const wktFormatter = new ol.format.WKT();
 function reqDrivingDistance(coord){
+
   const startPoint = new ol.geom.Point(coord);
   const wktPoint =wktFormatter.writeGeometry(startPoint);
-  const range = 1000;
-
+  const range = Number(rangeInput.value) * 1000;
+  if(range === 0) {
+    vectorSource.clear();
+    return;
+  }
   fetch("/range/reqDrivingDistance", {
     method: "POST",
     headers: {
@@ -58,7 +70,9 @@ function reqDrivingDistance(coord){
     map.getView().fit(
         feature.getGeometry().getExtent(),
         {
+          maxZoom:12,
           duration:1000,
         });
   });
 }
+
