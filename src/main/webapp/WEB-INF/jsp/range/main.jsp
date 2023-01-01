@@ -16,7 +16,22 @@
 
     <div id="map">
         <div id="map-controller">
+
+        </div>
+        <div id="list-wrapper">
+            <button id="feature-list-btn">△</button>
             <label for="range-input">주행거리<input id="range-input" value="3" type="number" />KM</label>
+            <div id="feature-list">
+                <ul>
+                    <li id="feature1" class="active">
+
+                    </li>
+                    <li id="feature2"></li>
+                    <li id="feature3"></li>
+                    <li id="feature4"></li>
+                    <li id="feature5"></li>
+                </ul>
+            </div>
         </div>
     </div>
     <script src="/js/range/range.js"></script>

@@ -64,15 +64,38 @@ function reqDrivingDistance(coord){
   }).then((response) => response.json())
   .then((jsonData)=>{
     const geom = jsonData.ddgeom
-    const feature = wktFormatter.readFeature(geom);
-    vectorSource.clear();
-    vectorSource.addFeature(feature);
-    map.getView().fit(
-        feature.getGeometry().getExtent(),
-        {
-          maxZoom:12,
-          duration:1000,
-        });
+    if(geom){
+      const feature = new ol.Feature({
+        geometry:wktFormatter.readFeature(geom).getGeometry(),
+        labelPoint:startPoint
+      })
+
+
+
+      vectorSource.clear();
+      vectorSource.addFeature(feature);
+      map.getView().fit(
+          feature.getGeometry().getExtent(),
+          {
+            maxZoom:12,
+            duration:1000,
+          });
+    }
   });
 }
 
+const listShowBtn = document.getElementById('feature-list-btn');
+const featureList = document.getElementById('feature-list');
+listShowBtn.addEventListener('click',function (){
+  if(listShowBtn.innerText === '△'){
+    listShowBtn.innerText = '▽';
+  }else{
+    listShowBtn.innerText = '△';
+  }
+
+  if(featureList.classList.contains('show')){
+    featureList.classList.remove('show');
+  }else{
+    featureList.classList.add('show');
+  }
+});
