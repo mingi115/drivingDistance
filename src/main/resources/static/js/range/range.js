@@ -1,3 +1,12 @@
+function showLodingImg(){
+  const lImg = document.getElementById('loading');
+  lImg.style.display = 'flex';
+}
+
+function hideLodingImg(){
+  const lImg = document.getElementById('loading');
+  lImg.style.display = 'none';
+}
 const vectorSource = new ol.source.Vector()
 const vertorLayer = new ol.layer.Vector({
   source : vectorSource,
@@ -52,6 +61,7 @@ function reqDrivingDistance(coord){
     vectorSource.clear();
     return;
   }
+  showLodingImg();
   fetch("/range/reqDrivingDistance", {
     method: "POST",
     headers: {
@@ -69,9 +79,6 @@ function reqDrivingDistance(coord){
         geometry:wktFormatter.readFeature(geom).getGeometry(),
         labelPoint:startPoint
       })
-
-
-
       vectorSource.clear();
       vectorSource.addFeature(feature);
       map.getView().fit(
@@ -81,6 +88,7 @@ function reqDrivingDistance(coord){
             duration:1000,
           });
     }
+    hideLodingImg();
   });
 }
 

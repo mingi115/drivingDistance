@@ -16,23 +16,67 @@
 
     <div id="map">
         <div id="map-controller">
-
         </div>
         <div id="list-wrapper">
             <button id="feature-list-btn">△</button>
             <label for="range-input">주행거리<input id="range-input" value="3" type="number" />KM</label>
             <div id="feature-list">
-                <ul>
+                <ol>
                     <li id="feature1" class="active">
-
+                        <div>
+                            <label>레이어 색상:<input type="color" value="#FF0000">,</label>
+                            <label>선택 x좌표 :<input type="number" disabled>,</label>
+                            <label>선택 y좌표 :<input type="number" disabled></label>
+                        </div>
                     </li>
-                    <li id="feature2"></li>
-                    <li id="feature3"></li>
-                    <li id="feature4"></li>
-                    <li id="feature5"></li>
-                </ul>
+                    <li id="feature2">
+                        <div>
+                            <label>레이어 색상:<input type="color" value="#FF7F00">,</label>
+                            <label>선택 x좌표 :<input type="number" disabled>,</label>
+                            <label>선택 y좌표 :<input type="number" disabled></label>
+                        </div>
+                    </li>
+                    <li id="feature3">
+                        <div>
+                            <label>레이어 색상:<input type="color" value="#FFFF00">,</label>
+                            <label>선택 x좌표 :<input type="number" disabled>,</label>
+                            <label>선택 y좌표 :<input type="number" disabled></label>
+                        </div>
+                    </li>
+                    <li id="feature4">
+                        <div>
+                            <label>레이어 색상:<input type="color" value="#00FF00">,</label>
+                            <label>선택 x좌표 :<input type="number" disabled>,</label>
+                            <label>선택 y좌표 :<input type="number" disabled></label>
+                        </div>
+                    </li>
+                    <li id="feature5">
+                        <div>
+                            <label>레이어 색상:<input type="color" value="#0000FF">,</label>
+                            <label>선택 x좌표 :<input type="number" disabled>,</label>
+                            <label>선택 y좌표 :<input type="number" disabled></label>
+                        </div>
+                    </li>
+                    <li id="feature6">
+                        <div>
+                            <label>레이어 색상:<input type="color" value="#4B0082">,</label>
+                            <label>선택 x좌표 :<input type="number" disabled>,</label>
+                            <label>선택 y좌표 :<input type="number" disabled></label>
+                        </div>
+                    </li>
+                    <li id="feature7">
+                        <div>
+                            <label>레이어 색상:<input type="color" value="#9400D3">,</label>
+                            <label>선택 x좌표 :<input type="number" disabled>,</label>
+                            <label>선택 y좌표 :<input type="number" disabled></label>
+                        </div>
+                    </li>
+                </ol>
             </div>
         </div>
+    </div>
+    <div id="loading">
+        <img id="loading-img" src="/image/diable_loading.gif" alt="로딩이미지">
     </div>
     <script src="/js/range/range.js"></script>
 </body>

@@ -14,7 +14,21 @@ body {
   z-index: 10;
 }
 
-
+#loading{
+  position: absolute;
+  top : 0;
+  background-color: #4141414d;
+  width: 100%;
+  height : 100vh;
+  z-index: 10000;
+  display: none;
+  justify-content: space-evenly;
+  align-items: center;
+}
+#loading-img{
+  width: 257px;
+  height: 256px;
+}
 #range-input{
   width:30px;
 }
@@ -35,6 +49,7 @@ body {
   height: 30vh;
   transition-property: height;
   transition-duration: .5s;
+  overflow: auto;
 }
 #feature-list-btn{
   width: 20vw;
@@ -47,9 +62,13 @@ body {
   height: 0;
   transition-property: height;
   transition-duration: .5s;
+  overflow: auto;
 }
 
-#feature-list .active{
-  border: 2px black;
+#feature-list ol .active{
+  border: 2px solid red;
 }
 
+#feature-list ol li div{
+  padding: 5px 2px;
+}
