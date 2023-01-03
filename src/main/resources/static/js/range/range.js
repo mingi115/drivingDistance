@@ -10,17 +10,6 @@ function hideLodingImg(){
 const vectorSource = new ol.source.Vector()
 const vertorLayer = new ol.layer.Vector({
   source : vectorSource,
-  style : [
-    new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: 'red',
-        width: 5
-      }),
-      fill: new ol.style.Fill({
-        color: '#FF00004d',
-      })
-    })
-  ]
 })
 const map = new ol.Map({
   view: new ol.View({
@@ -49,16 +38,18 @@ rangeInput.addEventListener('change',function(){
 map.on('click', function(e){
   targetCoord = e.coordinate;
   reqDrivingDistance(targetCoord);
+  setPointInfo(targetCoord);
 })
 
 const wktFormatter = new ol.format.WKT();
 function reqDrivingDistance(coord){
-
+  const selectedId = document.querySelector('#feature-list ol .active').id;
   const startPoint = new ol.geom.Point(coord);
   const wktPoint =wktFormatter.writeGeometry(startPoint);
   const range = Number(rangeInput.value) * 1000;
   if(range === 0) {
-    vectorSource.clear();
+    // vectorSource.clear();
+    deleteFeature(selectedId);
     return;
   }
   showLodingImg();
@@ -73,13 +64,16 @@ function reqDrivingDistance(coord){
     }),
   }).then((response) => response.json())
   .then((jsonData)=>{
-    const geom = jsonData.ddgeom
+    deleteFeature(selectedId);
+    const geom = jsonData.ddgeom;
     if(geom){
       const feature = new ol.Feature({
         geometry:wktFormatter.readFeature(geom).getGeometry(),
         labelPoint:startPoint
-      })
-      vectorSource.clear();
+      });
+      feature.setId(selectedId + 'Polygon');
+      feature.setStyle(getPolygonStyle());
+      // vectorSource.clear();
       vectorSource.addFeature(feature);
       map.getView().fit(
           feature.getGeometry().getExtent(),
@@ -107,3 +101,42 @@ listShowBtn.addEventListener('click',function (){
     featureList.classList.add('show');
   }
 });
+
+function getSelectedColor(){
+  const fl = document.getElementById('feature-list');
+  const hexColor = fl.querySelector('.active input[type=color]').value;
+  return hexColor;
+}
+
+function getPolygonStyle(){
+  const color = getSelectedColor();
+  return new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: color,
+      width: 4
+    }),
+    fill: new ol.style.Fill({
+      color: color+'4d',
+    })
+  })
+}
+
+function deleteFeature(id){
+  const polygonFeature = vectorSource.getFeatureById(id+'Polygon');
+  vectorSource.removeFeature(polygonFeature);
+}
+
+const liArr = document.querySelectorAll('#feature-list ol li');
+liArr.forEach((li) => li.addEventListener('click', changeActiveLi));
+function changeActiveLi(){
+  liArr.forEach((li)=>li.classList.remove('active'));
+  this.classList.add('active');
+}
+
+function setPointInfo(point){
+  const activeNode = document.querySelector('#feature-list ol .active');
+  const inputX = activeNode.querySelector('.x');
+  inputX.value = point[0];
+  const inputY = activeNode.querySelector('.y');
+  inputY.value = point[1];
+}
