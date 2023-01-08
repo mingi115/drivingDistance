@@ -37,23 +37,15 @@ rangeInput.addEventListener('change',function(){
 })
 map.on('click', function(e){
   targetCoord = e.coordinate;
-  reqDrivingDistance(targetCoord);
+  const selectedId = document.querySelector('#feature-list ol .active').id;
+  reqDrivingDistance(targetCoord, selectedId);
   setPointInfo(targetCoord);
 })
 
 const wktFormatter = new ol.format.WKT();
-function reqDrivingDistance(coord){
-  const selectedId = document.querySelector('#feature-list ol .active').id;
-  const startPoint = new ol.geom.Point(coord);
-  const wktPoint =wktFormatter.writeGeometry(startPoint);
-  const range = Number(rangeInput.value) * 1000;
-  if(range === 0) {
-    // vectorSource.clear();
-    deleteFeature(selectedId);
-    return;
-  }
-  showLodingImg();
-  fetch("/range/reqDrivingDistance", {
+
+function fetchDrivengDistance(wktPoint, range){
+  return fetch("/range/reqDrivingDistance", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -61,19 +53,30 @@ function reqDrivingDistance(coord){
     body: JSON.stringify({
       wktPoint: wktPoint,
       range: range,
-    }),
-  }).then((response) => response.json())
+    })
+  }).then((response) => response.json());
+}
+async function reqDrivingDistance(coord, id){
+  if(!id) return;
+  const startPoint = new ol.geom.Point(coord);
+  const wktPoint =wktFormatter.writeGeometry(startPoint);
+  const range = Number(rangeInput.value) * 1000;
+  if(range === 0) {
+    deleteFeature(id);
+    return;
+  }
+  showLodingImg();
+  await fetchDrivengDistance(wktPoint, range)
   .then((jsonData)=>{
-    deleteFeature(selectedId);
+    deleteFeature(id);
     const geom = jsonData.ddgeom;
     if(geom){
       const feature = new ol.Feature({
         geometry:wktFormatter.readFeature(geom).getGeometry(),
         labelPoint:startPoint
       });
-      feature.setId(selectedId + 'Polygon');
-      feature.setStyle(getPolygonStyle());
-      // vectorSource.clear();
+      feature.setId(id + 'Polygon');
+      feature.setStyle(getPolygonStyle(id));
       vectorSource.addFeature(feature);
       map.getView().fit(
           feature.getGeometry().getExtent(),
@@ -81,8 +84,14 @@ function reqDrivingDistance(coord){
             maxZoom:12,
             duration:1000,
           });
+    }else{
+      alert('결과가 없습니다 다른지역에서 다시시도 해주세요');
     }
     hideLodingImg();
+  }).catch((e)=>{
+    console.log(e);
+    hideLodingImg();
+    alert('다시 시도해주세요');
   });
 }
 
@@ -102,14 +111,13 @@ listShowBtn.addEventListener('click',function (){
   }
 });
 
-function getSelectedColor(){
-  const fl = document.getElementById('feature-list');
-  const hexColor = fl.querySelector('.active input[type=color]').value;
-  return hexColor;
+function getSelectedColor(id){
+  const fl = document.getElementById(id);
+  return fl.querySelector('input[type=color]').value;
 }
 
-function getPolygonStyle(){
-  const color = getSelectedColor();
+function getPolygonStyle(id){
+  const color = getSelectedColor(id);
   return new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: color,
@@ -140,3 +148,28 @@ function setPointInfo(point){
   const inputY = activeNode.querySelector('.y');
   inputY.value = point[1];
 }
+
+
+const colorInput =featureList.querySelectorAll('input[type=color]');
+colorInput.forEach((i) => {
+  i.addEventListener('change',function (){
+    const targetId = document.querySelector('#feature-list ol .active').id;
+    const targetFeature = vectorSource.getFeatureById(targetId + 'Polygon');
+    if(targetFeature){
+      targetFeature.setStyle(getPolygonStyle());
+    }
+  })
+});
+
+rangeInput.addEventListener('change',  async function(){
+  const liList = featureList.querySelectorAll('ol li');
+  for await (const node of liList){
+    const id = node.id;
+    const x = Number(node.querySelector('div .x').value);
+    const y = Number(node.querySelector('div .y').value);
+    if(id && x && y){
+      const coord = [x,y];
+      await reqDrivingDistance(coord , id);
+    }
+  }
+})
