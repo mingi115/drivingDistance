@@ -3,7 +3,7 @@
 
   <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <Pattern>%d %5p [%c] %m%n</Pattern>
+      <pattern>%d{yyyyMMdd HH:mm:ss.SSS} [%thread] %-3level %logger{5} - %msg %n</pattern>
     </encoder>
   </appender>
 
@@ -15,8 +15,12 @@
 
   <!-- Logger -->
   <logger name="com.project.side" level="DEBUG" appender-ref="console" />
-  <logger name="jdbc.sqlonly" level="INFO" appender-ref="console-infolog" />
-  <logger name="jdbc.resultsettable" level="INFO" appender-ref="console-infolog" />
+  <logger name="jdbc.sqlonly" level="DEBUG" appender-ref="console"/>
+  <logger name="jdbc.sqltiming" level="off" appender-ref="console"/>
+  <logger name="jdbc.audit" level="OFF" appender-ref="console"/>
+  <logger name="jdbc.resultset" level="OFF" appender-ref="console"/>
+  <logger name="jdbc.resultsettable" level="OFF" appender-ref="console"/>
+  <logger name="jdbc.connection" level="OFF" appender-ref="console"/>
 
   <!-- Root Logger -->
   <root level="DEBUG">

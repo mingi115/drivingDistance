@@ -4,8 +4,8 @@ spring:
       "local": "onLocalToDb"
       "dev": "onServerToDb"
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://192.168.56.1:5432/mydb"
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: "jdbc:log4jdbc:postgresql://192.168.56.1:5432/mydb"
     username: postgres
     password: "!Aa202020"
 
@@ -25,6 +25,7 @@ logging:
 
 mybatis:
   mapper-locations: "classpath:mybatis/mapper/**/**.xml"
+
 
 ---
 spring:
