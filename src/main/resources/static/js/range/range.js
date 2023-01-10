@@ -76,7 +76,7 @@ async function reqDrivingDistance(coord, id){
         labelPoint:startPoint
       });
       feature.setId(id + 'Polygon');
-      feature.setStyle(getPolygonStyle(id));
+      feature.setStyle(getSelectedColor(id));
       vectorSource.addFeature(feature);
       map.getView().fit(
           feature.getGeometry().getExtent(),
@@ -113,11 +113,11 @@ listShowBtn.addEventListener('click',function (){
 
 function getSelectedColor(id){
   const fl = document.getElementById(id);
-  return fl.querySelector('input[type=color]').value;
+  const color = fl.querySelector('input[type=color]').value;
+  return getPolygonStyle(color);
 }
 
-function getPolygonStyle(id){
-  const color = getSelectedColor(id);
+function getPolygonStyle(color){
   return new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: color,
@@ -172,4 +172,29 @@ rangeInput.addEventListener('change',  async function(){
       await reqDrivingDistance(coord , id);
     }
   }
+  getInterSetcion();
 })
+
+function getInterSetcion(){
+  deleteFeature('intersectionResult');
+  const ddList = vectorSource.getFeatures();
+  const jstsOl = new jsts.io.OL3Parser();
+  if(ddList.length > 1){
+    const stdFeatureGeom = ddList.pop().getGeometry();
+    const stdJstsObj = jstsOl.read(stdFeatureGeom);
+    let result;
+    ddList.forEach((dd)=>{
+      const compareJstsObj = jstsOl.read(dd.getGeometry());
+      result = stdJstsObj.intersection(compareJstsObj);
+    })
+
+    if(result){
+      const resultFeature = new ol.Feature(jstsOl.write(result));
+      resultFeature.setId('intersectionResult');
+      resultFeature.setStyle(getPolygonStyle('#ffffff'));
+
+      vectorSource.addFeature(resultFeature);
+    }
+  }
+
+}

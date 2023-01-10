@@ -22,14 +22,14 @@
             <label for="range-input">주행거리<input id="range-input" value="3" type="number" />KM</label>
             <div id="feature-list">
                 <ol>
-                    <li id="feature1" >
+                    <li id="feature1" class="active">
                         <div>
                             <label>레이어 색상:<input type="color" value="#FF0000">,</label>
                             <label>선택 x좌표 :<input class="x" type="number" disabled>,</label>
                             <label>선택 y좌표 :<input class="y" type="number" disabled></label>
                         </div>
                     </li>
-                    <li id="feature2" class="active">
+                    <li id="feature2" >
                         <div>
                             <label>레이어 색상:<input type="color" value="#FF7F00">,</label>
                             <label>선택 x좌표 :<input class="x" type="number" disabled>,</label>
@@ -78,6 +78,7 @@
     <div id="loading">
         <img id="loading-img" src="/image/diable_loading.gif" alt="로딩이미지">
     </div>
+    <script src="/js/range/jsts.min.js"></script>
     <script src="/js/range/range.js"></script>
 </body>
 </html>
