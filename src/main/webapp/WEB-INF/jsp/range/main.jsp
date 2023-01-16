@@ -75,9 +75,7 @@
             </div>
         </div>
     </div>
-    <div id="loading">
-        <img id="loading-img" src="/image/diable_loading.gif" alt="로딩이미지">
-    </div>
+
     <script src="/js/range/jsts.min.js"></script>
     <script src="/js/range/range.js"></script>
 </body>

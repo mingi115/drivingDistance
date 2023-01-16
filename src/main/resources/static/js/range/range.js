@@ -1,12 +1,20 @@
 function showLodingImg(){
-  const lImg = document.getElementById('loading');
-  lImg.style.display = 'flex';
+  const loadingDiv = document.createElement('div');
+  loadingDiv.id = 'loading';
+  loadingDiv.style.display = 'flex';
+  const loadingImg = document.createElement('img');
+  loadingImg.id = 'loading-img';
+  loadingImg.src = '/image/diable_loading.gif';
+  loadingImg.alt = '로딩이미지';
+  loadingDiv.append(loadingImg);
+
+  document.querySelector('body').append(loadingDiv);
 }
 
 function hideLodingImg(){
-  const lImg = document.getElementById('loading');
-  lImg.style.display = 'none';
+  document.getElementById('loading').remove();
 }
+
 const vectorSource = new ol.source.Vector()
 const vertorLayer = new ol.layer.Vector({
   source : vectorSource,
