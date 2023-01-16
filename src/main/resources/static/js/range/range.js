@@ -56,10 +56,10 @@ function fetchDrivengDistance(wktPoint, range){
     })
   }).then((response) => response.json());
 }
-async function reqDrivingDistance(coord, id){
+async function reqDrivingDistance(coord, id, allAtOnce){
   if(!id) return;
   const startPoint = new ol.geom.Point(coord);
-  const wktPoint =wktFormatter.writeGeometry(startPoint);
+  const wktPoint = wktFormatter.writeGeometry(startPoint);
   const range = Number(rangeInput.value) * 1000;
   if(range === 0) {
     deleteFeature(id);
@@ -88,6 +88,8 @@ async function reqDrivingDistance(coord, id){
       alert('결과가 없습니다 다른지역에서 다시시도 해주세요');
     }
     hideLodingImg();
+  }).then((e)=>{
+    if(!allAtOnce) getInterSetcion();
   }).catch((e)=>{
     console.log(e);
     hideLodingImg();
@@ -169,30 +171,29 @@ rangeInput.addEventListener('change',  async function(){
     const y = Number(node.querySelector('div .y').value);
     if(id && x && y){
       const coord = [x,y];
-      await reqDrivingDistance(coord , id);
+      await reqDrivingDistance(coord , id, true);
     }
   }
   getInterSetcion();
 })
 
 function getInterSetcion(){
-  deleteFeature('intersectionResult');
+
+  deleteFeature('intersection');
   const ddList = vectorSource.getFeatures();
   const jstsOl = new jsts.io.OL3Parser();
   if(ddList.length > 1){
     const stdFeatureGeom = ddList.pop().getGeometry();
-    const stdJstsObj = jstsOl.read(stdFeatureGeom);
-    let result;
+    let result = jstsOl.read(stdFeatureGeom);
     ddList.forEach((dd)=>{
       const compareJstsObj = jstsOl.read(dd.getGeometry());
-      result = stdJstsObj.intersection(compareJstsObj);
+      result = result.intersection(compareJstsObj);
     })
 
     if(result){
       const resultFeature = new ol.Feature(jstsOl.write(result));
-      resultFeature.setId('intersectionResult');
+      resultFeature.setId('intersectionPolygon');
       resultFeature.setStyle(getPolygonStyle('#ffffff'));
-
       vectorSource.addFeature(resultFeature);
     }
   }
