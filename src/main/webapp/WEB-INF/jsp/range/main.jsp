@@ -10,15 +10,14 @@
     <title>DrivingDistance 테스트</title>
     <script src="https://cdn.jsdelivr.net/npm/ol@v7.2.2/dist/ol.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.2.2/ol.css">
+    <link rel="stylesheet" type="text/css" href="/css/common.css">
     <link rel="stylesheet" type="text/css" href="/css/range.css">
 </head>
 <body>
 
     <div id="map">
-        <div id="map-controller">
-        </div>
         <div id="list-wrapper">
-            <button id="feature-list-btn">△</button>
+            <button type="button" id="feature-list-btn">△</button>
             <label for="range-input">주행거리<input id="range-input" value="3" type="number" />KM</label>
             <div id="feature-list">
                 <ol>
@@ -75,7 +74,7 @@
             </div>
         </div>
     </div>
-
+    <script src="/js/common/common.js"></script>
     <script src="/js/range/jsts.min.js"></script>
     <script src="/js/range/range.js"></script>
 </body>
