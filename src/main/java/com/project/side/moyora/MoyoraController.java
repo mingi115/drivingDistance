@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/moyora")
 public class MoyoraController {
 
-    @Resource(name="rangeMapper")
-    private rangeMapper rangeDao;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @GetMapping(value = "/moyora")
+    @GetMapping(value = "/moyo")
     public String moyoraPage(){
         return "/moyora/moyo";
     }
