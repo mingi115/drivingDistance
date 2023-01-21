@@ -14,3 +14,19 @@ function showLodingImg(){
 function hideLodingImg(){
   document.getElementById('loading').remove();
 }
+
+const listShowBtn = document.getElementById('feature-list-btn');
+const featureList = document.getElementById('feature-list');
+listShowBtn.addEventListener('click',function (){
+  if(listShowBtn.innerText === '△'){
+    listShowBtn.innerText = '▽';
+  }else{
+    listShowBtn.innerText = '△';
+  }
+
+  if(featureList.classList.contains('show')){
+    featureList.classList.remove('show');
+  }else{
+    featureList.classList.add('show');
+  }
+});
