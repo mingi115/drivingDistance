@@ -1,5 +1,3 @@
-
-
 const vectorSource = new ol.source.Vector()
 const vertorLayer = new ol.layer.Vector({
   source : vectorSource,
@@ -30,9 +28,11 @@ rangeInput.addEventListener('change',function(){
 })
 map.on('click', function(e){
   targetCoord = e.coordinate;
-  const selectedId = document.querySelector('#feature-list ol .active').id;
+  const selected = document.querySelector('#feature-list ol .active');
+  const selectedId = selected.id;
   reqDrivingDistance(targetCoord, selectedId);
   setPointInfo(targetCoord);
+  addDeleteBtn(selected);
 })
 
 const wktFormatter = new ol.format.WKT();
@@ -81,7 +81,7 @@ async function reqDrivingDistance(coord, id, allAtOnce){
       alert('결과가 없습니다 다른지역에서 다시시도 해주세요');
     }
     hideLodingImg();
-  }).then((e)=>{
+  }).then(()=>{
     if(!allAtOnce) getInterSetcion();
   }).catch((e)=>{
     console.log(e);
@@ -90,21 +90,26 @@ async function reqDrivingDistance(coord, id, allAtOnce){
   });
 }
 
-const listShowBtn = document.getElementById('feature-list-btn');
-const featureList = document.getElementById('feature-list');
-listShowBtn.addEventListener('click',function (){
-  if(listShowBtn.innerText === '△'){
-    listShowBtn.innerText = '▽';
-  }else{
-    listShowBtn.innerText = '△';
+function addDeleteBtn(targetNode){
+  const flDiv =  targetNode.querySelector('div');
+  if(!flDiv.querySelector('.delete-btn')){
+    const deleteBtn = document.createElement('button');
+    deleteBtn.type = 'button';
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.innerText = '삭제';
+    deleteBtn.addEventListener('click', deleteThisFeature);
+    flDiv.append(deleteBtn);
   }
+}
 
-  if(featureList.classList.contains('show')){
-    featureList.classList.remove('show');
-  }else{
-    featureList.classList.add('show');
-  }
-});
+function deleteThisFeature(){
+  const fNode = this.parentNode.parentNode;
+  deleteFeature(fNode.id);
+  fNode.querySelector('.x').value=null;
+  fNode.querySelector('.y').value=null;
+  this.remove();
+}
+
 
 function getSelectedColor(id){
   const fl = document.getElementById(id);
