@@ -14,17 +14,17 @@ public class GuestVo {
 
     private int guestNo;
 
-    private LocalDateTime startTime;
+    private final LocalDateTime startTime;
     private LocalDateTime endTime;
     private List<Coordinate> movingLog;
 
-    GuestVo(int guestNo){
+    public GuestVo(int guestNo){
         this.guestNo = guestNo;
         this.startTime = LocalDateTime.now();
-        this.movingLog = new ArrayList<>();
+//        this.movingLog = new ArrayList<>();
     }
     void setGuestNo(int guestNo){ this.guestNo = guestNo; }
-    int getGuestNo(){ return this.guestNo; }
+    public int getGuestNo(){ return this.guestNo; }
 
     String getStartTime(){
         return startTime.format(DateTimeFormatter.ofPattern("a HH시 mm분"));
@@ -63,5 +63,15 @@ public class GuestVo {
 
     Optional<Coordinate> getLastPoint(){
         return Optional.ofNullable(movingLog.get(movingLog.size()-1));
+    }
+
+    @Override
+    public String toString() {
+        return "GuestVo{" +
+            "guestNo=" + guestNo +
+            ", startTime=" + startTime +
+            ", endTime=" + endTime +
+            ", movingLog=" + movingLog +
+            '}';
     }
 }

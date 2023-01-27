@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/moyora")
 public class MoyoraController {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     RoomService roomService;
     @Autowired
@@ -29,7 +30,6 @@ public class MoyoraController {
         this.roomService = roomService;
     }
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @GetMapping(value = "/moyo")
     public String moyoraPage(Model model, @RequestParam(name = "roomNo", required = false) String roomNo){
         boolean hasRoomNo = roomNo != null;
@@ -41,10 +41,9 @@ public class MoyoraController {
 
     @ResponseBody
     @PostMapping(value = "/room/create")
-    public HashMap<String, String> createRoom(HttpSession mySession){
-        HashMap<String, String> result = new HashMap<>();
-        System.out.println(mySession.getId());
-        //roomService.createRoom();
+    public HashMap<String, Object> createRoom(HttpSession mySession){
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("roomNo", roomService.createRoom(mySession));
         return result;
     }
 }

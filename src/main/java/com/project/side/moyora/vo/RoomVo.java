@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoomVo {
-    private final int roomNo;
+    private final long roomNo;
     private Coordinate destination;
-    private List<GuestVo> guestVoList;
+    private List<GuestVo> guestVoList = new ArrayList<>();
 
-    public RoomVo(int roomNo, Coordinate destination, GuestVo guestVo) {
+    public RoomVo(long roomNo, GuestVo guestVo) {
         this.roomNo = roomNo;
-        this.destination = destination;
         this.guestVoList.add(guestVo);
     }
 
-    public int getRoomNo() {
+    public long getRoomNo() {
         return roomNo;
     }
 
