@@ -24,8 +24,67 @@ const map = new ol.Map({
 function makeRoom(){
   postData('/moyora/room/create')
   .then((r)=>{
-    console.log(r);
+    chooseWaySelectDestination(r.roomNo);
   })
+}
+
+function chooseWaySelectDestination(roomNo){
+  console.log(roomNo);
+  const startModal = document.getElementById('start_modal');
+  startModal.innerHTML='';
+  const wrapper = document.createElement('div');
+  const designateTarget = document.createElement('button');
+  designateTarget.type = 'button';
+  designateTarget.innerHTML = '직접지정';
+  designateTarget.addEventListener('click', targetSetMode);
+  const findAddressTarget = document.createElement('button');
+  findAddressTarget.type = 'button';
+  findAddressTarget.innerHTML = '주소지정';
+  designateTarget.addEventListener('click', findTargetAddress);
+  wrapper.append(findAddressTarget);
+  wrapper.append(designateTarget);
+  startModal.append(wrapper);
+}
+
+function findTargetAddress(){}
+
+
+function targetSetMode() {
+  const startModal = document.getElementById('start_modal');
+  startModal.style.display = 'none';
+  console.log('targetSetMode');
+
+  const imgSrc = '/image/pngwing.com.png';
+  const feature = new ol.Feature({
+    geometry: new ol.geom.Point([0,0])
+  });
+
+  feature.setStyle(
+      new ol.style.Style({
+        image: new ol.style.Icon({
+          anchor: [0.5, 0.3],
+          anchorOrigin : 'bottom-left',
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          src: imgSrc
+        })
+      })
+  );
+  const startAddPoiMoveEvent = function(e){
+    var featureGeom = feature.getGeometry();
+    featureGeom.setCoordinates(e.coordinate);
+  }
+  vectorSource.addFeature(feature);
+  map.on('pointermove', startAddPoiMoveEvent);
+
+  const startAddPoiClickEvent = function(e){
+    map.un('pointermove', startAddPoiMoveEvent);
+    var featureGeom = feature.getGeometry();
+    featureGeom.setCoordinates(e.coordinate);
+    map.un('singleclick', startAddPoiClickEvent);
+    map.on('singleclick', callOverLay);
+  };
+  map.on('singleclick', startAddPoiClickEvent);
 }
 
 async function postData(url = '', data = {}) {
