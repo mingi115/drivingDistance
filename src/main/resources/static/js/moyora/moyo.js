@@ -54,7 +54,7 @@ function targetSetMode() {
   startModal.style.display = 'none';
   console.log('targetSetMode');
 
-  const imgSrc = '/image/pngwing.com.png';
+  const imgSrc = '/image/marker.png';
   const feature = new ol.Feature({
     geometry: new ol.geom.Point([0,0])
   });
