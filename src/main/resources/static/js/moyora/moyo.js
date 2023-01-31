@@ -71,7 +71,7 @@ function targetSetMode() {
       })
   );
   const startAddPoiMoveEvent = function(e){
-    var featureGeom = feature.getGeometry();
+    const featureGeom = feature.getGeometry();
     featureGeom.setCoordinates(e.coordinate);
   }
   vectorSource.addFeature(feature);
@@ -79,12 +79,26 @@ function targetSetMode() {
 
   const startAddPoiClickEvent = function(e){
     map.un('pointermove', startAddPoiMoveEvent);
-    var featureGeom = feature.getGeometry();
+    const featureGeom = feature.getGeometry();
     featureGeom.setCoordinates(e.coordinate);
-    map.un('singleclick', startAddPoiClickEvent);
-    map.on('singleclick', callOverLay);
+    if(confirm("해당 위치를 목적지로 설정하시겠습니까?")) {
+      map.un('singleclick', startAddPoiClickEvent);
+      map.on('singleclick', setDestinationOnRoom(e.coordinate));
+    }else{
+      map.on('pointermove', startAddPoiMoveEvent);
+    }
   };
   map.on('singleclick', startAddPoiClickEvent);
+}
+
+function setDestinationOnRoom(coordinate){
+  const url = "/room/setDestination";
+  const param = {coordinate};
+  postData(url, param)
+  .then((res)=>{
+    console.log(res);
+  })
+
 }
 
 async function postData(url = '', data = {}) {
