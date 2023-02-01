@@ -92,7 +92,7 @@ function targetSetMode() {
 }
 
 function setDestinationOnRoom(coordinate){
-  const url = "/room/setDestination";
+  const url = "/moyora/room/setDestination";
   const param = {coordinate};
   postData(url, param)
   .then((res)=>{

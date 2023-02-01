@@ -1,8 +1,10 @@
 package com.project.side.moyora.controller;
 
 import com.project.side.moyora.service.RoomService;
+import com.project.side.moyora.vo.RoomVo;
 import com.project.side.range.mapper.rangeMapper;
 import java.util.HashMap;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -52,7 +54,10 @@ public class MoyoraController {
     public HashMap<String, Object> setDestination(HttpSession mySession,
             @RequestBody HashMap<String, Object> param){
         HashMap<String, Object> result = new HashMap<>();
-        System.out.println(param);
-        return param;
+        List<Double> coordinate = (List<Double>) param.get("coordinate");
+        RoomVo myRoom = roomService.setDestinationOnRoom(mySession, coordinate);
+        System.out.printf(myRoom.toString());
+        result.put("room", myRoom);
+        return result;
     }
 }

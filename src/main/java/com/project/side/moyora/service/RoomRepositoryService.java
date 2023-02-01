@@ -5,6 +5,6 @@ import com.project.side.moyora.vo.RoomVo;
 
 public interface RoomRepositoryService {
     RoomVo createRoom(GuestVo guest);
-    void deleteRoom(int roomNo);
-    RoomVo findRoom(int roomNo);
+    void deleteRoom(long roomNo);
+    RoomVo findRoom(long roomNo);
 }

@@ -1,11 +1,16 @@
 package com.project.side.moyora.vo;
 
-public class Coordinate {
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 
+public class Coordinate implements Serializable {
+
+    @JsonProperty
     private double x;
+    @JsonProperty
     private double y;
 
-    Coordinate (double x, double y){this.x = x; this.y = y;}
+    public Coordinate(double x, double y){this.x = x; this.y = y;}
 
     double getX() {return this.x;}
     double getY() {return this.y;}
