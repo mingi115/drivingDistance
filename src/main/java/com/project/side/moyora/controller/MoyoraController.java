@@ -56,7 +56,6 @@ public class MoyoraController {
         HashMap<String, Object> result = new HashMap<>();
         List<Double> coordinate = (List<Double>) param.get("coordinate");
         RoomVo myRoom = roomService.setDestinationOnRoom(mySession, coordinate);
-        System.out.printf(myRoom.toString());
         result.put("room", myRoom);
         return result;
     }

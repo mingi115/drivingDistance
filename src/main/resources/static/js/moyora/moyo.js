@@ -96,7 +96,8 @@ function setDestinationOnRoom(coordinate){
   const param = {coordinate};
   postData(url, param)
   .then((res)=>{
-    console.log(res);
+    const startModal = document.getElementById('start_modal');
+    startModal.style.display = 'none';
   })
 
 }
