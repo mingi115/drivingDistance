@@ -24,12 +24,11 @@ const map = new ol.Map({
 function makeRoom(){
   postData('/moyora/room/create')
   .then((r)=>{
-    chooseWaySelectDestination(r.roomNo);
+    chooseWaySelectDestination();
   })
 }
 
-function chooseWaySelectDestination(roomNo){
-  console.log(roomNo);
+function chooseWaySelectDestination(){
   const startModal = document.getElementById('start_modal');
   startModal.innerHTML='';
   const wrapper = document.createElement('div');
@@ -52,7 +51,6 @@ function findTargetAddress(){}
 function targetSetMode() {
   const startModal = document.getElementById('start_modal');
   startModal.style.display = 'none';
-  console.log('targetSetMode');
 
   const imgSrc = '/image/marker.png';
   const feature = new ol.Feature({
