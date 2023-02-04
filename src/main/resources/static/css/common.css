@@ -23,7 +23,7 @@ body {
 }
 
 #start_modal{
-  display: flex;
+  display: none;
   position: absolute;
   top : 0;
   background-color: #4141414d;

@@ -20,6 +20,19 @@ const map = new ol.Map({
   target: 'map',
 });
 
+checkMyRoom();
+function checkMyRoom(){
+  const startModal = document.getElementById('start_modal');
+  postData('/moyora/room/check').then((r)=>{
+    const roomNo = r.roomNo;
+    if(roomNo){
+
+    }else{
+      startModal.style.display = 'flex';
+    }
+  })
+}
+
 
 function makeRoom(){
   postData('/moyora/room/create')
@@ -32,16 +45,20 @@ function chooseWaySelectDestination(){
   const startModal = document.getElementById('start_modal');
   startModal.innerHTML='';
   const wrapper = document.createElement('div');
+
   const designateTarget = document.createElement('button');
   designateTarget.type = 'button';
   designateTarget.innerHTML = '직접지정';
   designateTarget.addEventListener('click', targetSetMode);
+
   const findAddressTarget = document.createElement('button');
   findAddressTarget.type = 'button';
   findAddressTarget.innerHTML = '주소지정';
   designateTarget.addEventListener('click', findTargetAddress);
+
   wrapper.append(findAddressTarget);
   wrapper.append(designateTarget);
+
   startModal.append(wrapper);
 }
 

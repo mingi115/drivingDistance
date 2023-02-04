@@ -39,7 +39,13 @@ public class MoyoraController {
         return "/moyora/moyo";
     }
 
-
+    @ResponseBody
+    @PostMapping(value = "/room/check")
+    public HashMap<String, Object> checkingRoom(HttpSession mySession){
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("roomNo", mySession.getAttribute("roomNo"));
+        return result;
+    }
 
     @ResponseBody
     @PostMapping(value = "/room/create")
