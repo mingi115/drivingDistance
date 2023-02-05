@@ -20,13 +20,15 @@ const map = new ol.Map({
   target: 'map',
 });
 
+let ws;
+
 checkMyRoom();
 function checkMyRoom(){
   const startModal = document.getElementById('start_modal');
   postData('/moyora/room/check').then((r)=>{
     const roomNo = r.roomNo;
-    if(roomNo){
-
+    if(roomNo || roomNo === 0){
+      connectSocket();
     }else{
       startModal.style.display = 'flex';
     }
@@ -34,10 +36,32 @@ function checkMyRoom(){
 }
 
 
+function connectSocket(){
+
+  ws = new WebSocket(`ws://${location.host}/moyora/socket`);
+
+  ws.onopen = function(e){ // 연결 시 실행
+    console.log("info : connection opened.");
+  }
+
+  ws.onmessage = function(e){ // 서버로부터 메세지를 받았을 때 실행
+    console.log(e.data); //전달 받은 메세지 = e
+  }
+
+  ws.onclose = function(e){ // 연결 종료 시 실행
+    console.log("info : connection closed");
+  };
+
+  ws.onerror = function(e){
+    console.log("error")
+  };
+}
+
 function makeRoom(){
   postData('/moyora/room/create')
   .then((r)=>{
     chooseWaySelectDestination();
+    connectSocket();
   })
 }
 
