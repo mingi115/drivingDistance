@@ -5,6 +5,7 @@ import com.project.side.moyora.service.RoomService;
 import com.project.side.moyora.service.repo.RoomRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 @Configuration
 public class SpringConfig {
@@ -16,5 +17,10 @@ public class SpringConfig {
     @Bean
     public RoomRepositoryService roomRepositoryService() {
         return new RoomRepository();
+    }
+
+    @Bean
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
     }
 }

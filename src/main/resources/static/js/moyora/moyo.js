@@ -61,7 +61,7 @@ function makeRoom(){
   postData('/moyora/room/create')
   .then((r)=>{
     chooseWaySelectDestination();
-    connectSocket();
+
   })
 }
 
@@ -137,6 +137,7 @@ function setDestinationOnRoom(coordinate){
   .then((res)=>{
     const startModal = document.getElementById('start_modal');
     startModal.style.display = 'none';
+    connectSocket();
   })
 
 }
