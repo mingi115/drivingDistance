@@ -28,7 +28,7 @@ function checkMyRoom(){
   postData('/moyora/room/check').then((r)=>{
     const roomNo = r.roomNo;
     if(roomNo || roomNo === 0){
-      connectSocket();
+      connectSocket(roomNo);
     }else{
       startModal.style.display = 'flex';
     }
@@ -36,9 +36,9 @@ function checkMyRoom(){
 }
 
 
-function connectSocket(){
+function connectSocket(roomNo){
 
-  ws = new WebSocket(`ws://${location.host}/moyora/socket`);
+  ws = new WebSocket(`ws://${location.host}/moyora/socket/${roomNo}`);
 
   ws.onopen = function(e){ // 연결 시 실행
     console.log("info : connection opened.");
@@ -135,9 +135,10 @@ function setDestinationOnRoom(coordinate){
   const param = {coordinate};
   postData(url, param)
   .then((res)=>{
+    const room = res.room;
     const startModal = document.getElementById('start_modal');
     startModal.style.display = 'none';
-    connectSocket();
+    connectSocket(room.roomNo);
   })
 
 }
