@@ -29,7 +29,6 @@ function checkMyRoom(){
     const roomNo = r.roomNo;
     if(roomNo || roomNo === 0){
       connectSocket(roomNo);
-      loggingLocation();
     }else{
       startModal.style.display = 'flex';
     }
