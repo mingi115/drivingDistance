@@ -29,6 +29,7 @@ function checkMyRoom(){
     const roomNo = r.roomNo;
     if(roomNo || roomNo === 0){
       connectSocket(roomNo);
+      loggingLocation();
     }else{
       startModal.style.display = 'flex';
     }
@@ -139,8 +140,34 @@ function setDestinationOnRoom(coordinate){
     const startModal = document.getElementById('start_modal');
     startModal.style.display = 'none';
     connectSocket(room.roomNo);
+    loggingLocation();
   })
+}
 
+let watchID;
+function loggingLocation() {
+  const options = {
+    enableHighAccuracy: true,
+    maximumAge: 30000,
+    timeout: 27000
+  };
+  function success(position) {
+    const latitude  = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    console.log(latitude, longitude);
+  }
+
+  function error() {
+    alert('위치 액세스에 허용하지 않으면 해당 서비스를 사용할 수 없습니다.');
+  }
+
+  if(!navigator.geolocation) {
+    loggingLocation();
+  } else {
+    watchID = navigator.geolocation.watchPosition(success, error, options);
+    //navigator.geolocation.getCurrentPosition(success, error);
+  }
 }
 
 async function postData(url = '', data = {}) {
