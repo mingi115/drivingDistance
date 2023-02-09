@@ -5,6 +5,7 @@ import com.project.side.moyora.vo.Coordinate;
 import com.project.side.moyora.vo.GuestVo;
 import com.project.side.moyora.vo.RoomVo;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -30,9 +31,25 @@ public class RoomService {
 
     public RoomVo setDestinationOnRoom(HttpSession mySession, List<Double> coordinate) {
         Coordinate desti = new Coordinate(coordinate.get(0), coordinate.get(1));
-        long roomNo = (long) mySession.getAttribute("roomNo");
+        Long roomNo = (long) mySession.getAttribute("roomNo");
         RoomVo myRoom = roomRepository.findRoom(roomNo);
         myRoom.setDestination(desti);
         return myRoom;
+    }
+
+    public HashMap<String, Object> getMyInfoInRoom(HttpSession mySession) {
+        HashMap<String, Object> result = new HashMap<>();
+        if(mySession.getAttribute("roomNo") != null){
+            long roomNo = (long) mySession.getAttribute("roomNo");
+            RoomVo myRoom = roomRepository.findRoom(roomNo);
+            result.put("destination", myRoom.getDestination());
+            result.put("roomNo", roomNo);
+
+            if(mySession.getAttribute("guestNo") != null){
+                GuestVo itsMe = myRoom.setNewGuest();
+                result.put("guestNo", itsMe.getGuestNo());
+            }
+        }
+        return result;
     }
 }

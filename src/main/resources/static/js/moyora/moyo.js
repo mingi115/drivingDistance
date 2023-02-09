@@ -29,6 +29,8 @@ function checkMyRoom(){
     const roomNo = r.roomNo;
     if(roomNo || roomNo === 0){
       connectSocket(roomNo);
+
+      loggingLocation();
     }else{
       startModal.style.display = 'flex';
     }
@@ -61,7 +63,6 @@ function makeRoom(){
   postData('/moyora/room/create')
   .then((r)=>{
     chooseWaySelectDestination();
-
   })
 }
 
@@ -88,16 +89,12 @@ function chooseWaySelectDestination(){
 
 function findTargetAddress(){}
 
-
-function targetSetMode() {
-  const startModal = document.getElementById('start_modal');
-  startModal.style.display = 'none';
-
+function getDestinationFeature(coord){
   const imgSrc = '/image/marker.png';
   const feature = new ol.Feature({
-    geometry: new ol.geom.Point([0,0])
+    geometry: new ol.geom.Point(coord)
   });
-
+  feature.setId('dest');
   feature.setStyle(
       new ol.style.Style({
         image: new ol.style.Icon({
@@ -109,11 +106,25 @@ function targetSetMode() {
         })
       })
   );
+  return feature;
+}
+
+function setDestinateion(coord){
+  const feature = getDestinationFeature([0,0]);
+  vectorSource.addFeature(feature);
+}
+
+function targetSetMode() {
+  const startModal = document.getElementById('start_modal');
+  startModal.style.display = 'none';
+
+  const feature = getDestinationFeature([0,0]);
+  vectorSource.addFeature(feature);
   const startAddPoiMoveEvent = function(e){
     const featureGeom = feature.getGeometry();
     featureGeom.setCoordinates(e.coordinate);
   }
-  vectorSource.addFeature(feature);
+
   map.on('pointermove', startAddPoiMoveEvent);
 
   const startAddPoiClickEvent = function(e){

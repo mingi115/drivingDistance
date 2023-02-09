@@ -28,4 +28,24 @@ public class RoomVo {
     public void setDestination(Coordinate destination) {
         this.destination = destination;
     }
+
+    public GuestVo setNewGuest(){
+        long newGuestNo = getNewGuestNo();
+        GuestVo itsMe = new GuestVo(newGuestNo);
+        guestVoList.add(itsMe);
+        return itsMe;
+    }
+
+    public long getNewGuestNo(){
+        Long newGuestNo = null;
+        if(guestVoList.size() > 0){
+            for(GuestVo guest : guestVoList ){
+                long gNo = guest.getGuestNo();
+                if(newGuestNo == null || newGuestNo < gNo ){
+                    newGuestNo = gNo;
+                }
+            }
+        }
+        return newGuestNo == null ? 0 : newGuestNo;
+    }
 }

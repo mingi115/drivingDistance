@@ -14,7 +14,7 @@ import org.springframework.cglib.core.Local;
 public class GuestVo {
 
     @JsonProperty
-    private int guestNo;
+    private long guestNo;
     @JsonProperty
     private final LocalDateTime startTime;
     @JsonProperty
@@ -22,13 +22,13 @@ public class GuestVo {
     @JsonProperty
     private List<Coordinate> movingLog;
 
-    public GuestVo(int guestNo){
+    public GuestVo(long guestNo){
         this.guestNo = guestNo;
         this.startTime = LocalDateTime.now();
 //        this.movingLog = new ArrayList<>();
     }
-    void setGuestNo(int guestNo){ this.guestNo = guestNo; }
-    public int getGuestNo(){ return this.guestNo; }
+    void setGuestNo(long guestNo){ this.guestNo = guestNo; }
+    public long getGuestNo(){ return this.guestNo; }
 
     String getStartTime(){
         return startTime.format(DateTimeFormatter.ofPattern("a HH시 mm분"));
