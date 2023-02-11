@@ -27,9 +27,10 @@ function checkMyRoom(){
   const startModal = document.getElementById('start_modal');
   postData('/moyora/room/check').then((r)=>{
     const roomNo = r.roomNo;
-    if(roomNo || roomNo === 0){
+    const destination = r.destination;
+    if(destination){
       connectSocket(roomNo);
-
+      setDestinateion([destination.x, destination.y]);
       loggingLocation();
     }else{
       startModal.style.display = 'flex';
@@ -110,7 +111,7 @@ function getDestinationFeature(coord){
 }
 
 function setDestinateion(coord){
-  const feature = getDestinationFeature([0,0]);
+  const feature = getDestinationFeature(coord);
   vectorSource.addFeature(feature);
 }
 
