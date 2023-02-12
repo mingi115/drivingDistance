@@ -20,6 +20,8 @@ const map = new ol.Map({
   target: 'map',
 });
 
+const routeDictionary = {};
+let myId;
 let ws;
 
 checkMyRoom();
@@ -28,12 +30,15 @@ function checkMyRoom(){
   postData('/moyora/room/check').then((r)=>{
     const roomNo = r.roomNo;
     const destination = r.destination;
-    if(destination){
+    if(!roomNo){
+      startModal.style.display = 'flex';
+    }else if(!destination){
+      startModal.style.display = 'flex';
+      chooseWaySelectDestination();
+    }else{
       connectSocket(roomNo);
       setDestinateion([destination.x, destination.y]);
       loggingLocation();
-    }else{
-      startModal.style.display = 'flex';
     }
   })
 }
@@ -151,6 +156,8 @@ function setDestinationOnRoom(coordinate){
     const startModal = document.getElementById('start_modal');
     startModal.style.display = 'none';
     connectSocket(room.roomNo);
+    myId = room.newGuestNo;
+    routeDictionary[myId] = [];
     loggingLocation();
   })
 }
@@ -163,10 +170,21 @@ function loggingLocation() {
     timeout: 27000
   };
   function success(position) {
+    console.log('position',position);
     const latitude  = position.coords.latitude;
     const longitude = position.coords.longitude;
 
-    console.log(latitude, longitude);
+    routeDictionary[myId].push([longitude, latitude]) ;
+
+    const myFeature = vectorSource.getFeatureById(myId);
+    console.log('routeDictionary', routeDictionary);
+    if(myFeature){
+
+      myFeature.getGeometry().appendCoordinate([longitude, latitude])
+    }else{
+      setLineString(myId);
+    }
+    console.log(longitude, latitude);
   }
 
   function error() {
@@ -179,6 +197,15 @@ function loggingLocation() {
     watchID = navigator.geolocation.watchPosition(success, error, options);
     //navigator.geolocation.getCurrentPosition(success, error);
   }
+}
+
+function setLineString(id) {
+  const line = new ol.geom.LineString(routeDictionary[id]);
+  const feature = new ol.Feature({
+    geometry: line,
+  });
+  feature.setId(id);
+  vectorSource.addFeature(feature);
 }
 
 async function postData(url = '', data = {}) {
