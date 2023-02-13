@@ -25,7 +25,12 @@ logging:
 
 mybatis:
   mapper-locations: "classpath:mybatis/mapper/**/**.xml"
-
+server:
+  ssl:
+    key-store: "classpath:mingi-keystore.p12"
+    key-store-type: PKCS12
+    key-alias: mingi-keystore
+    key-store-password: 202020
 
 ---
 spring:

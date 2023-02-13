@@ -46,7 +46,7 @@ function checkMyRoom(){
 
 function connectSocket(roomNo){
 
-  ws = new WebSocket(`ws://${location.host}/moyora/socket/${roomNo}`);
+  ws = new WebSocket(`wss://${location.host}/moyora/socket/${roomNo}`);
 
   ws.onopen = function(e){ // 연결 시 실행
     console.log("info : connection opened.");
