@@ -137,6 +137,7 @@ function targetSetMode() {
     map.un('pointermove', startAddPoiMoveEvent);
     const featureGeom = feature.getGeometry();
     featureGeom.setCoordinates(e.coordinate);
+
     if(confirm("해당 위치를 목적지로 설정하시겠습니까?")) {
       map.un('singleclick', startAddPoiClickEvent);
       map.on('singleclick', setDestinationOnRoom(e.coordinate));
@@ -204,8 +205,34 @@ function setLineString(id) {
   const feature = new ol.Feature({
     geometry: line,
   });
+  feature.setStyle(getLineStringStyle());
   feature.setId(id);
   vectorSource.addFeature(feature);
+}
+function getLineStringStyle(){
+  const color = generateRandomColor();
+  return [
+    new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: color,
+        width: 10 + 2,
+      }),
+    }),
+    new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: color,
+        width: 10,
+      }),
+    }),
+  ];
+}
+function generateRandomColor(){
+  let maxVal = 0xFFFFFF; // 16777215
+  let randomNumber = Math.random() * maxVal;
+  randomNumber = Math.floor(randomNumber);
+  randomNumber = randomNumber.toString(16);
+  let randColor = randomNumber.padStart(6, 0);
+  return `#${randColor.toUpperCase()}`
 }
 
 async function postData(url = '', data = {}) {
