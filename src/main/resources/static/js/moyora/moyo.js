@@ -50,6 +50,7 @@ function connectSocket(roomNo){
 
   ws.onopen = function(e){ // 연결 시 실행
     console.log("info : connection opened.");
+    loggingLocation();
   }
 
   ws.onmessage = function(e){ // 서버로부터 메세지를 받았을 때 실행
@@ -159,7 +160,6 @@ function setDestinationOnRoom(coordinate){
     connectSocket(room.roomNo);
     myId = room.newGuestNo;
     routeDictionary[myId] = [];
-    loggingLocation();
   })
 }
 
@@ -171,21 +171,23 @@ function loggingLocation() {
     timeout: 27000
   };
   function success(position) {
-    console.log('position',position);
     const latitude  = position.coords.latitude;
     const longitude = position.coords.longitude;
 
     routeDictionary[myId].push([longitude, latitude]) ;
 
     const myFeature = vectorSource.getFeatureById(myId);
-    console.log('routeDictionary', routeDictionary);
     if(myFeature){
-
-      myFeature.getGeometry().appendCoordinate([longitude, latitude])
+      myFeature.getGeometry().appendCoordinate([longitude, latitude]);
     }else{
       setLineString(myId);
     }
-    console.log(longitude, latitude);
+    const data = {
+      id : myId,
+      longitude : longitude,
+      latitude : latitude
+    }
+    ws.send(JSON.stringify(data));
   }
 
   function error() {

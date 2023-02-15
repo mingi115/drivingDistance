@@ -39,7 +39,8 @@ public class MoyoraSocket {
     @OnMessage
     public HashMap<String, Object> roomMessage(String message, Session session){
         HashMap<String, Object> result = new HashMap<>();
-
+        System.out.printf(message);
+        result.put("message", message);
         return result;
     }
     @OnClose
