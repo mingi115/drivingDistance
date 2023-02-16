@@ -1,5 +1,7 @@
 package com.project.side.moyora.socket;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.side.moyora.socket.SocketConfig.ServerEndpointConfigurator;
 import java.util.Collections;
 import java.util.HashMap;
@@ -37,11 +39,12 @@ public class MoyoraSocket {
         }
     }
     @OnMessage
-    public HashMap<String, Object> roomMessage(String message, Session session){
+    public String roomMessage(String message, Session session) throws JsonProcessingException {
         HashMap<String, Object> result = new HashMap<>();
         System.out.printf(message);
         result.put("message", message);
-        return result;
+        ObjectMapper om = new ObjectMapper();
+        return om.writeValueAsString(result);
     }
     @OnClose
     public void closeRoom(Session session){
