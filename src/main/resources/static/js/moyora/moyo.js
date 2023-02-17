@@ -30,15 +30,17 @@ function checkMyRoom(){
   postData('/moyora/room/check').then((r)=>{
     const roomNo = r.roomNo;
     const destination = r.destination;
-    if(!roomNo){
+    myId = r.guestNo;
+
+    if(!roomNo &&  roomNo !== 0){
       startModal.style.display = 'flex';
     }else if(!destination){
       startModal.style.display = 'flex';
       chooseWaySelectDestination();
     }else{
-      connectSocket(roomNo);
+      routeDictionary[myId] = [];
       setDestinateion([destination.x, destination.y]);
-      loggingLocation();
+      connectSocket(roomNo);
     }
   })
 }
