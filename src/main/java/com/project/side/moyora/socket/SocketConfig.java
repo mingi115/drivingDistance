@@ -13,7 +13,7 @@ public class SocketConfig {
         private static volatile BeanFactory context;
 
         @Override
-        public <T> T getEndpointInstance(Class<T> clazz) throws InstantiationException {
+        public <T> T getEndpointInstance(Class<T> clazz)  {
             return context.getBean(clazz);
         }
 

@@ -2,7 +2,6 @@ package com.project.side.moyora.socket;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.side.moyora.service.RoomService;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
