@@ -65,16 +65,16 @@ public class MoyoraController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/guest/addCoodinate")
-    public HashMap<String, Object> addCoodinate(HttpSession mySession,
+    @PostMapping(value = "/guest/addCoordinate")
+    public HashMap<String, Object> addCoordinate(HttpSession mySession,
             @RequestBody HashMap<String, Object> param){
         HashMap<String, Object> result= new HashMap<>();
         try {
             roomService.addPointOnUser(mySession, param);
-            result.put("message", "addCoodinate.success");
+            result.put("message", "addCoordinate.success");
         }catch (Exception e){
             e.printStackTrace();
-            result.put("message", "addCoodinate.fail");
+            result.put("message", "addCoordinate.fail");
         }
         return result;
     }
