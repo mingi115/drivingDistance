@@ -60,6 +60,7 @@ function connectSocket(roomNo){
   }
 
   ws.onclose = function(e){ // 연결 종료 시 실행
+    console.log(e);
     console.log("info : connection closed");
   };
 
@@ -192,7 +193,8 @@ function loggingLocation() {
     ws.send(JSON.stringify(data));
   }
 
-  function error() {
+  function error(e) {
+    console.log(e);
     alert('위치 액세스에 허용하지 않으면 해당 서비스를 사용할 수 없습니다.');
   }
 
