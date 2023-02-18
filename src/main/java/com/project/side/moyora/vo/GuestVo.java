@@ -25,7 +25,7 @@ public class GuestVo {
     public GuestVo(long guestNo){
         this.guestNo = guestNo;
         this.startTime = LocalDateTime.now();
-//        this.movingLog = new ArrayList<>();
+        this.movingLog = new ArrayList<>();
     }
     void setGuestNo(long guestNo){ this.guestNo = guestNo; }
     public long getGuestNo(){ return this.guestNo; }

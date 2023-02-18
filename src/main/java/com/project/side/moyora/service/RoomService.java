@@ -52,4 +52,15 @@ public class RoomService {
         }
         return result;
     }
+
+    public void addPointOnUser(HttpSession mySession, HashMap<String, Object> message){
+        if(mySession.getAttribute("roomNo") != null) {
+            long roomNo = (long) mySession.getAttribute("roomNo");
+            long guestNo = (long) mySession.getAttribute("guestNo");
+            RoomVo myRoom = roomRepository.findRoom(roomNo);
+            double x = (double) message.get("longitude");
+            double y = (double) message.get("latitude");
+            myRoom.addPointOnGuest(guestNo, x, y);
+        }
+    }
 }

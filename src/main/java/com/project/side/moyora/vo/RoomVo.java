@@ -3,6 +3,7 @@ package com.project.side.moyora.vo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class RoomVo {
     @JsonProperty
@@ -47,5 +48,14 @@ public class RoomVo {
             }
         }
         return newGuestNo == null ? 0 : newGuestNo;
+    }
+
+    public void addPointOnGuest(long id, double x, double y){
+        Optional<GuestVo> optMe =
+            guestVoList.stream().filter(guestVo -> guestVo.getGuestNo() == id).findFirst();
+        if(optMe.isPresent()){
+            GuestVo me = optMe.get();
+            me.appendCoordAtMovingLog(x, y);
+        }
     }
 }

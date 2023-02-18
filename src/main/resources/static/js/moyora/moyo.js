@@ -47,7 +47,6 @@ function checkMyRoom(){
 
 
 function connectSocket(roomNo){
-
   ws = new WebSocket(`wss://${location.host}/moyora/socket/${roomNo}`);
 
   ws.onopen = function(e){ // 연결 시 실행
@@ -96,9 +95,7 @@ function chooseWaySelectDestination(){
 
   startModal.append(wrapper);
 }
-
 function findTargetAddress(){}
-
 function getDestinationFeature(coord){
   const imgSrc = '/image/marker.png';
   const feature = new ol.Feature({
@@ -123,7 +120,6 @@ function setDestinateion(coord){
   const feature = getDestinationFeature(coord);
   vectorSource.addFeature(feature);
 }
-
 function targetSetMode() {
   const startModal = document.getElementById('start_modal');
   startModal.style.display = 'none';
@@ -151,7 +147,6 @@ function targetSetMode() {
   };
   map.on('singleclick', startAddPoiClickEvent);
 }
-
 function setDestinationOnRoom(coordinate){
   const url = "/moyora/room/setDestination";
   const param = {coordinate};
@@ -174,8 +169,8 @@ function loggingLocation() {
     timeout: 27000
   };
   function success(position) {
-    const latitude  = position.coords.latitude;
     const longitude = position.coords.longitude;
+    const latitude  = position.coords.latitude;
 
     routeDictionary[myId].push([longitude, latitude]) ;
 
@@ -191,6 +186,7 @@ function loggingLocation() {
       latitude : latitude
     }
     ws.send(JSON.stringify(data));
+    appendPointOnServer(longitude, latitude);
   }
 
   function error(e) {
@@ -202,9 +198,15 @@ function loggingLocation() {
     loggingLocation();
   } else {
     watchID = navigator.geolocation.watchPosition(success, error, options);
-    //navigator.geolocation.getCurrentPosition(success, error);
   }
 }
+
+function appendPointOnServer(longitude, latitude){
+  const data = {longitude, latitude};
+  postData("/moyora/guest/addCoodinate", data)
+  .then((r) => {console.log(r)});
+}
+
 
 function setLineString(id) {
   const line = new ol.geom.LineString(routeDictionary[id]);
