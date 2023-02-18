@@ -1,11 +1,13 @@
 package com.project.side.moyora.socket;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.side.moyora.socket.SocketConfig.ServerEndpointConfigurator;
+import com.project.side.moyora.service.RoomService;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
@@ -26,7 +28,6 @@ public class MoyoraSocket {
 
     public MoyoraSocket() {}
 
-
     @OnOpen
     public void connectRoom(Session wSession, EndpointConfig ec, @PathParam(value = "roomNo")Long roomNo){
         if(!clients.contains(wSession)) {
@@ -37,12 +38,15 @@ public class MoyoraSocket {
         }
     }
     @OnMessage
-    public String roomMessage(String message, Session session) throws JsonProcessingException {
-        HashMap<String, Object> result = new HashMap<>();
-        System.out.printf(message);
-        result.put("message", message);
+    public void roomMessage(String message, Session session) throws IOException {
         ObjectMapper om = new ObjectMapper();
-        return om.writeValueAsString(result);
+        HashMap<String, Object> recievedMessage =
+            om.readValue(message, new TypeReference<HashMap<String, Object>>(){});
+        for(Session s : clients) {
+            if(!Objects.equals(session.getId(), s.getId())){
+                s.getBasicRemote().sendText(om.writeValueAsString(recievedMessage));
+            }
+        }
     }
     @OnClose
     public void closeRoom(Session session){
