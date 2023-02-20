@@ -203,7 +203,7 @@ function loggingLocation() {
 
 function appendPointOnServer(longitude, latitude){
   const data = {longitude, latitude};
-  postData("/moyora/guest/addCoodrinate", data)
+  postData("/moyora/guest/addCoordinate", data)
   .then((r) => {console.log(r)});
 }
 
