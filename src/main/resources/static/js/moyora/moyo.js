@@ -191,7 +191,13 @@ function loggingLocation() {
 
   function error(e) {
     console.log(e);
-    alert('위치 액세스에 허용하지 않으면 해당 서비스를 사용할 수 없습니다.');
+    const code = e.code;
+    if(code === 3){
+      navigator.geolocation.clearWatch(watchID);
+      watchID = navigator.geolocation.watchPosition(success, error, options);
+    }else{
+      alert('위치 액세스에 허용하지 않으면 해당 서비스를 사용할 수 없습니다.');
+    }
   }
 
   if(!navigator.geolocation) {
