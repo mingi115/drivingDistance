@@ -26,6 +26,7 @@ public class RoomVo {
         return destination;
     }
 
+    public List<GuestVo> getGuestVoList(){ return guestVoList; }
     public void setDestination(Coordinate destination) {
         this.destination = destination;
     }

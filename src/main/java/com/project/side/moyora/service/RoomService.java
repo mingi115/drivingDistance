@@ -41,12 +41,18 @@ public class RoomService {
         if(mySession.getAttribute("roomNo") != null){
             long roomNo = (long) mySession.getAttribute("roomNo");
             RoomVo myRoom = roomRepository.findRoom(roomNo);
+
             result.put("destination", myRoom.getDestination());
             result.put("roomNo", roomNo);
+            result.put("guestList", myRoom.getGuestVoList());
 
-            if(mySession.getAttribute("guestNo") != null){
+            if(mySession.getAttribute("guestNo") == null){
                 GuestVo itsMe = myRoom.setNewGuest();
+                mySession.setAttribute("guestNo", itsMe.getGuestNo());
                 result.put("guestNo", itsMe.getGuestNo());
+            }else{
+                long guestNo = (long) mySession.getAttribute("guestNo");
+                result.put("guestNo", guestNo);
             }
         }
         return result;
