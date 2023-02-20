@@ -52,8 +52,13 @@ public class MoyoraSocket {
         }
     }
     @OnClose
-    public void closeRoom(Session session){
-
+    public void closeRoom(Session wSession){
+        if(clients.contains(wSession)) {
+            clients.remove(wSession);
+            System.out.println("session closed : " + wSession);
+        }else {
+            System.out.println("이미 제거된 session 임!!!");
+        }
     }
 
     @OnError
