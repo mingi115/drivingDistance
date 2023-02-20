@@ -38,13 +38,17 @@ public class MoyoraSocket {
     }
     @OnMessage
     public void roomMessage(String message, Session session) throws IOException {
-        ObjectMapper om = new ObjectMapper();
-        HashMap<String, Object> recievedMessage =
-            om.readValue(message, new TypeReference<HashMap<String, Object>>(){});
-        for(Session s : clients) {
-            if(!Objects.equals(session.getId(), s.getId())){
-                s.getBasicRemote().sendText(om.writeValueAsString(recievedMessage));
+        try {
+            ObjectMapper om = new ObjectMapper();
+            HashMap<String, Object> recievedMessage =
+                om.readValue(message, new TypeReference<HashMap<String, Object>>(){});
+            for(Session s : clients) {
+                if(!Objects.equals(session.getId(), s.getId())){
+                    s.getBasicRemote().sendText(om.writeValueAsString(recievedMessage));
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
     @OnClose
