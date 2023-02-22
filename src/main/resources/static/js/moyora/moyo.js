@@ -41,10 +41,18 @@ function checkMyRoom(){
       routeDictionary[myId] = [];
       setDestinateion([destination.x, destination.y]);
       connectSocket(roomNo);
+      const guestList = r.guestList;
+      if(guestList) addGuestsInfo(guestList);
     }
   })
 }
 
+function addGuestsInfo(guestList){
+  guestList.forEach((guest)=> {
+    routeDictionary[guest.guestNo] = guest.movingLog.map(({x, y}) => [x, y]);
+    setLineString(guest.guestNo);
+  })
+}
 
 function connectSocket(roomNo){
   ws = new WebSocket(`wss://${location.host}/moyora/socket/${roomNo}`);
