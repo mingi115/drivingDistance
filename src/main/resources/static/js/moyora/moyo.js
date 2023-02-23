@@ -63,7 +63,12 @@ function connectSocket(roomNo){
   }
 
   ws.onmessage = function(e){ // 서버로부터 메세지를 받았을 때 실행
-    console.log(e.data); //전달 받은 메세지 = e
+    const message = JSON.parse(e.data);
+    const callerId = message.id;
+
+    if(!routeDictionary[callerId]) routeDictionary[callerId] = [];
+    routeDictionary[callerId].push([message.longitude, message.latitude]);
+    appendPointOnMapFeature(callerId, message.longitude, message.latitude);
   }
 
   ws.onclose = function(e){ // 연결 종료 시 실행
@@ -170,6 +175,15 @@ function setDestinationOnRoom(coordinate){
 }
 
 let watchID;
+
+function appendPointOnMapFeature(id, longitude, latitude){
+  const myFeature = vectorSource.getFeatureById(id);
+  if(myFeature){
+    myFeature.getGeometry().appendCoordinate([longitude, latitude]);
+  }else{
+    setLineString(id);
+  }
+}
 function loggingLocation() {
   const options = {
     enableHighAccuracy: true,
@@ -181,13 +195,8 @@ function loggingLocation() {
     const latitude  = position.coords.latitude;
 
     routeDictionary[myId].push([longitude, latitude]) ;
+    appendPointOnMapFeature(myId, longitude, latitude);
 
-    const myFeature = vectorSource.getFeatureById(myId);
-    if(myFeature){
-      myFeature.getGeometry().appendCoordinate([longitude, latitude]);
-    }else{
-      setLineString(myId);
-    }
     const data = {
       id : myId,
       longitude : longitude,
