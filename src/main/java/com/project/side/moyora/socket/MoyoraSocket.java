@@ -31,7 +31,6 @@ public class MoyoraSocket {
     public void connectRoom(Session wSession, EndpointConfig ec, @PathParam(value = "roomNo")Long roomNo){
         if(!clients.contains(wSession)) {
             clients.add(wSession);
-            System.out.println("session open : " + wSession);
         }else {
             System.out.println("이미 연결된 session 임!!!");
         }
@@ -53,12 +52,7 @@ public class MoyoraSocket {
     }
     @OnClose
     public void closeRoom(Session wSession){
-        if(clients.contains(wSession)) {
-            clients.remove(wSession);
-            System.out.println("session closed : " + wSession);
-        }else {
-            System.out.println("이미 제거된 session 임!!!");
-        }
+        if(clients.contains(wSession)) clients.remove(wSession);
     }
 
     @OnError
