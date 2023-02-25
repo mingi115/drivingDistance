@@ -26,16 +26,14 @@ let ws;
 
 checkMyRoom();
 function checkMyRoom(){
-  const startModal = document.getElementById('start_modal');
   postData('/moyora/room/check').then((r)=>{
     const roomNo = r.roomNo;
     const destination = r.destination;
     myId = r.guestNo;
 
     if(!roomNo &&  roomNo !== 0){
-      startModal.style.display = 'flex';
+      returnToStart();
     }else if(!destination){
-      startModal.style.display = 'flex';
       chooseWaySelectDestination();
     }else{
       routeDictionary[myId] = [];
@@ -45,6 +43,48 @@ function checkMyRoom(){
       if(guestList) addGuestsInfo(guestList);
     }
   })
+}
+
+function returnToStart(){
+  const startModal = document.getElementById('start_modal');
+  startModal.innerHTML = '';
+  startModal.style.display = 'flex';
+  const wrapperDiv = document.createElement('div');
+  const startButton = document.createElement('button');
+  startButton.innerText = '방 만들기';
+  startButton.addEventListener('click', makeRoom);
+  const participateButton = document.createElement('button');
+  participateButton.innerText = '방 참여하기';
+  participateButton.addEventListener('click', setRoomNoInput)
+  wrapperDiv.append(startButton);
+  wrapperDiv.append(participateButton);
+  startModal.append(wrapperDiv);
+}
+function setRoomNoInput(){
+  const startModal = document.getElementById('start_modal');
+  startModal.innerHTML = '';
+  startModal.style.display = 'flex';
+  const wrapperDiv = document.createElement('div');
+  const inputLabel = document.createElement('label');
+  inputLabel.innerText = '방 번호';
+  const roomNoInput = document.createElement('input');
+  roomNoInput.type = 'number';
+  roomNoInput.id = 'roomNoInput';
+  const participateButton = document.createElement('button');
+  participateButton.innerText = '참가하기';
+  wrapperDiv.append(inputLabel);
+  wrapperDiv.append(roomNoInput);
+  wrapperDiv.append(participateButton);
+  startModal.append(wrapperDiv);
+  addReturnButton();
+}
+
+function addReturnButton(){
+  const startModal = document.getElementById('start_modal');
+  const returnButton = document.createElement('button');
+  returnButton.addEventListener('click', returnToStart);
+  returnButton.innerText = '되돌아가기';
+  startModal.append(returnButton);
 }
 
 function addGuestsInfo(guestList){
@@ -77,7 +117,7 @@ function connectSocket(roomNo){
   };
 
   ws.onerror = function(e){
-    console.log("error")
+    console.log("error");
   };
 }
 
@@ -91,22 +131,20 @@ function makeRoom(){
 function chooseWaySelectDestination(){
   const startModal = document.getElementById('start_modal');
   startModal.innerHTML='';
+  startModal.style.display = 'flex';
   const wrapper = document.createElement('div');
-
   const designateTarget = document.createElement('button');
   designateTarget.type = 'button';
   designateTarget.innerHTML = '직접지정';
   designateTarget.addEventListener('click', targetSetMode);
-
   const findAddressTarget = document.createElement('button');
   findAddressTarget.type = 'button';
   findAddressTarget.innerHTML = '주소지정';
   designateTarget.addEventListener('click', findTargetAddress);
-
   wrapper.append(findAddressTarget);
   wrapper.append(designateTarget);
-
   startModal.append(wrapper);
+  addReturnButton();
 }
 function findTargetAddress(){}
 function getDestinationFeature(coord){
