@@ -202,8 +202,10 @@ function loggingLocation() {
       longitude : longitude,
       latitude : latitude
     }
-    ws.send(JSON.stringify(data));
-    appendPointOnServer(longitude, latitude);
+    if(ws.readyState === 1){
+      ws.send(JSON.stringify(data));
+      appendPointOnServer(longitude, latitude);
+    }
   }
 
   function error(e) {
