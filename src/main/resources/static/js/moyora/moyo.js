@@ -72,13 +72,23 @@ function setRoomNoInput(){
   roomNoInput.id = 'roomNoInput';
   const participateButton = document.createElement('button');
   participateButton.innerText = '참가하기';
+  participateButton.addEventListener('click', participateTheRoom);
   wrapperDiv.append(inputLabel);
   wrapperDiv.append(roomNoInput);
   wrapperDiv.append(participateButton);
   startModal.append(wrapperDiv);
   addReturnButton();
 }
-
+function participateTheRoom(){
+  const roomNo = document.getElementById('roomNoInput').value
+  if(!roomNo) {
+    return;
+  }
+  postData('/moyora/room/participate', {roomNo})
+  .then((r)=> {
+    console.log()
+  });
+}
 function addReturnButton(){
   const startModal = document.getElementById('start_modal');
   const returnButton = document.createElement('button');

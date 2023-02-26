@@ -60,6 +60,16 @@ public class MoyoraController {
         result.put("room", myRoom);
         return result;
     }
+    @ResponseBody
+    @PostMapping(value = "/room/participate")
+    public HashMap<String, Object> participateTheRoom(HttpSession mySession,
+        @RequestBody HashMap<String, Object> param){
+        HashMap<String, Object> result = new HashMap<>();
+        Long roomNo = Long.parseLong((String) param.get("roomNo"));
+        System.out.println("roomNo :: " + roomNo);
+        result.put("roomNo", roomNo);
+        return result;
+    }
 
     @ResponseBody
     @PostMapping(value = "/guest/addCoordinate")
