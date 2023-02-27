@@ -52,35 +52,52 @@ function returnToStart(){
   const wrapperDiv = document.createElement('div');
   const startButton = document.createElement('button');
   startButton.innerText = '방 만들기';
-  startButton.addEventListener('click', makeRoom);
+  startButton.addEventListener('click', ()=>setRoomNoInput('생성하기'));
   const participateButton = document.createElement('button');
   participateButton.innerText = '방 참여하기';
-  participateButton.addEventListener('click', setRoomNoInput)
+  participateButton.addEventListener('click', ()=>setRoomNoInput('참여하기'));
   wrapperDiv.append(startButton);
   wrapperDiv.append(participateButton);
   startModal.append(wrapperDiv);
 }
-function setRoomNoInput(){
+function setRoomNoInput(btnStr){
   const startModal = document.getElementById('start_modal');
   startModal.innerHTML = '';
   startModal.style.display = 'flex';
   const wrapperDiv = document.createElement('div');
+  wrapperDiv.style.textAlign = 'center';
   const inputLabel = document.createElement('label');
   inputLabel.innerText = '방 번호';
   const roomNoInput = document.createElement('input');
   roomNoInput.type = 'number';
   roomNoInput.id = 'roomNoInput';
+  const br1 = document.createElement('br');
+  const pwLabel = document.createElement('label');
+  pwLabel.innerText = '비밀번호';
+  const pwInput = document.createElement('input');
+  pwInput.type = 'password';
+  pwInput.id = 'pwInput';
+  const br2 = document.createElement('br');
   const participateButton = document.createElement('button');
-  participateButton.innerText = '참가하기';
-  participateButton.addEventListener('click', participateTheRoom);
+  participateButton.innerText = btnStr;
+  if(btnStr === '참여하기' ) {
+    participateButton.addEventListener('click', participateTheRoom);
+  }else if(btnStr === '생성하기' ){
+    participateButton.addEventListener('click', makeRoom);
+  }
+
   wrapperDiv.append(inputLabel);
   wrapperDiv.append(roomNoInput);
+  wrapperDiv.append(br1);
+  wrapperDiv.append(pwLabel);
+  wrapperDiv.append(pwInput);
+  wrapperDiv.append(br2);
   wrapperDiv.append(participateButton);
   startModal.append(wrapperDiv);
   addReturnButton();
 }
 function participateTheRoom(){
-  const roomNo = document.getElementById('roomNoInput').value
+  const roomNo = document.getElementById('roomNoInput').value;
   if(!roomNo) {
     return;
   }
@@ -132,7 +149,9 @@ function connectSocket(roomNo){
 }
 
 function makeRoom(){
-  postData('/moyora/room/create')
+  const roomNo = document.getElementById('roomNoInput');
+  const pwInput = document.getElementById('pwInput');
+  postData('/moyora/room/create', {roomNo, pwInput})
   .then((r)=>{
     chooseWaySelectDestination();
   })
