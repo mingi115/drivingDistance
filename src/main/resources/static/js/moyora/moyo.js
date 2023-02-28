@@ -69,7 +69,7 @@ function setRoomNoInput(btnStr){
   const inputLabel = document.createElement('label');
   inputLabel.innerText = '방 번호';
   const roomNoInput = document.createElement('input');
-  roomNoInput.type = 'number';
+  roomNoInput.type = 'text';
   roomNoInput.id = 'roomNoInput';
   const br1 = document.createElement('br');
   const pwLabel = document.createElement('label');
@@ -149,13 +149,35 @@ function connectSocket(roomNo){
 }
 
 function makeRoom(){
-  const roomNo = document.getElementById('roomNoInput');
-  const pwInput = document.getElementById('pwInput');
-  postData('/moyora/room/create', {roomNo, pwInput})
+  const roomNoInput = document.getElementById('roomNoInput').value;
+  const pwInput = document.getElementById('pwInput').value;
+  if(!roomValidate(roomNoInput, pwInput)) return;
+  postData('/moyora/room/create', {roomNoInput, pwInput})
   .then((r)=>{
     chooseWaySelectDestination();
   })
 }
+
+function roomValidate(roomNoInput, pwInput){
+  console.log('roomNo :: ', roomNoInput,'  pwInput :: ',  pwInput);
+  if(!roomNoInput) {
+    alert('방 번호를 입력해주세요');
+    return false;
+  }
+  if(!pwInput) {
+    alert('비밀번호를 입력해주세요');
+    return false;
+  }
+  const regex = /^[0-9]+$/;
+  if(!regex.test(roomNoInput)) {
+    alert('방 번호는 글자를 포함할 수 없습니다');
+    const tmpInput = document.getElementById('roomNoInput');
+    tmpInput.value = null;
+    return false;
+  }
+  return true;
+}
+
 
 function chooseWaySelectDestination(){
   const startModal = document.getElementById('start_modal');
