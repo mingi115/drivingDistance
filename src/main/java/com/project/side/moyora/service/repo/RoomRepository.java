@@ -16,12 +16,10 @@ public class RoomRepository implements RoomRepositoryService {
 
     HashMap<Long, RoomVo> roomStore = new HashMap<>();
     @Override
-    public RoomVo createRoom(GuestVo guest) {
-        Set<Long> keys = roomStore.keySet();
-        Long bigKey = keys.stream().max(Comparator.comparing(x -> x)).orElse(0L);
-        logger.debug("new room number is :: " + bigKey);
-        RoomVo newRoom = new RoomVo(bigKey, guest);
-        roomStore.put(bigKey, newRoom);
+    public RoomVo createRoom(GuestVo guest, long roomNo, String pw) {
+        RoomVo newRoom = new RoomVo(roomNo, guest, pw);
+        logger.debug("new room number is :: " + roomNo);
+        roomStore.put(roomNo, newRoom);
         return newRoom;
     }
 
@@ -33,5 +31,10 @@ public class RoomRepository implements RoomRepositoryService {
     @Override
     public RoomVo findRoom(long roomNo) {
         return  roomStore.get(roomNo);
+    }
+
+    @Override
+    public boolean isRoomAvailable(Long paramRoomNo) {
+        return roomStore.get(paramRoomNo) == null;
     }
 }

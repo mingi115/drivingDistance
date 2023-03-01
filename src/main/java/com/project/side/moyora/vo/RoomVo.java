@@ -11,10 +11,13 @@ public class RoomVo {
     @JsonProperty
     private Coordinate destination;
     @JsonProperty
+    private String password;
+    @JsonProperty
     private List<GuestVo> guestVoList = new ArrayList<>();
 
-    public RoomVo(long roomNo, GuestVo guestVo) {
+    public RoomVo(long roomNo, GuestVo guestVo, String password) {
         this.roomNo = roomNo;
+        this.password = password;
         this.guestVoList.add(guestVo);
     }
 

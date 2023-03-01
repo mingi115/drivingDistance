@@ -44,10 +44,10 @@ public class MoyoraController {
 
     @ResponseBody
     @PostMapping(value = "/room/create")
-    public HashMap<String, Object> createRoom(HttpSession mySession){
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("roomNo", roomService.createRoom(mySession));
-        return result;
+    public HashMap<String, Object> createRoom(HttpSession mySession,
+        @RequestBody HashMap<String, String> param){
+        System.out.println(param);
+        return roomService.createRoom(mySession, param);
     }
 
     @ResponseBody

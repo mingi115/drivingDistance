@@ -152,9 +152,14 @@ function makeRoom(){
   const roomNoInput = document.getElementById('roomNoInput').value;
   const pwInput = document.getElementById('pwInput').value;
   if(!roomValidate(roomNoInput, pwInput)) return;
-  postData('/moyora/room/create', {roomNoInput, pwInput})
+  postData('/moyora/room/create', {roomNo : roomNoInput, pw: pwInput})
   .then((r)=>{
-    chooseWaySelectDestination();
+    const code = r.code;
+    if(code){
+      chooseWaySelectDestination();
+    }else{
+      alert(r.message);
+    }
   })
 }
 
