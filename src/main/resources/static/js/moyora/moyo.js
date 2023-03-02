@@ -59,6 +59,12 @@ function returnToStart(){
   wrapperDiv.append(startButton);
   wrapperDiv.append(participateButton);
   startModal.append(wrapperDiv);
+  getOutMyRoom();
+}
+
+function getOutMyRoom(){
+  postData('/moyora/room/out')
+  .then((r)=>{console.log(r)});
 }
 function setRoomNoInput(btnStr){
   const startModal = document.getElementById('start_modal');

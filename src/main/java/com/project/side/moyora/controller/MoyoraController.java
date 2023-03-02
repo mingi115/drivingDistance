@@ -72,6 +72,20 @@ public class MoyoraController {
     }
 
     @ResponseBody
+    @PostMapping(value = "/room/out")
+    public HashMap<String, Object> getOutRoom(HttpSession mySession){
+        HashMap<String, Object> result = new HashMap<>();
+        if(mySession.getAttribute("roomNo") != null){
+            result.put("message", mySession.getAttribute("roomNo") + "번 방에서 나가졌습니다");
+            mySession.removeAttribute("roomNo");
+        }
+        mySession.removeAttribute("guestNo");
+        result.put("code", true);
+
+        return result;
+    }
+
+    @ResponseBody
     @PostMapping(value = "/guest/addCoordinate")
     public HashMap<String, Object> addCoordinate(HttpSession mySession,
             @RequestBody HashMap<String, Object> param){
@@ -85,4 +99,6 @@ public class MoyoraController {
         }
         return result;
     }
+
+
 }
