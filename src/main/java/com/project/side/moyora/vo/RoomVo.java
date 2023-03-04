@@ -62,4 +62,8 @@ public class RoomVo {
             me.appendCoordAtMovingLog(x, y);
         }
     }
+
+    public boolean comaprePassword(String pw){
+        return this.password.equals(pw);
+    }
 }

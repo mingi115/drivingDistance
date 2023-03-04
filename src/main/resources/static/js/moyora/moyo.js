@@ -109,7 +109,10 @@ function participateTheRoom(){
   }
   postData('/moyora/room/participate', {roomNo})
   .then((r)=> {
-    console.log()
+    alert(r.message);
+    if(r.code){
+      checkMyRoom();
+    }
   });
 }
 function addReturnButton(){

@@ -77,4 +77,27 @@ public class RoomService {
             myRoom.addPointOnGuest(guestNo, x, y);
         }
     }
+
+    public HashMap<String, Object> participateRoom(HttpSession mySession, HashMap<String, String> param) {
+        HashMap<String, Object> result = new HashMap<>();
+        Long paramRoomNo =  Long.parseLong(param.get("roomNo"));
+        String pw = param.get("pw");
+        if(!roomRepository.isRoomAvailable(paramRoomNo)){
+            result.put("code", false);
+            result.put("message", "존재하지 않는 방입니다.");
+        }else{
+            RoomVo room = roomRepository.findRoom(paramRoomNo);
+            if(room.comaprePassword(pw)){
+                GuestVo gv = room.setNewGuest();
+                mySession.setAttribute("roomNo", room.getRoomNo());
+                mySession.setAttribute("guestNo", gv.getGuestNo());
+                result.put("code", true);
+                result.put("message", room.getRoomNo() +"번 방에 참가하였습니다.");
+            }else{
+                result.put("code", false);
+                result.put("message", "비밀번호가 틀렸습니다.");
+            }
+        }
+        return result;
+    }
 }
