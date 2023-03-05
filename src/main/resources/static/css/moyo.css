@@ -1,0 +1,7 @@
+#roomInfo{
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  left: 40px;
+  font-size: 20px;
+}

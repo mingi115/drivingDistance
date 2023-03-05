@@ -34,8 +34,10 @@ function checkMyRoom(){
     if(!roomNo &&  roomNo !== 0){
       returnToStart();
     }else if(!destination){
+      document.getElementById('roomInfo').innerText ='방번호 : ' + roomNo;
       chooseWaySelectDestination();
     }else{
+      document.getElementById('roomInfo').innerText = '방번호 : ' + roomNo;
       routeDictionary[myId] = [];
       setDestinateion([destination.x, destination.y]);
       connectSocket(roomNo);
@@ -46,6 +48,7 @@ function checkMyRoom(){
 }
 
 function returnToStart(){
+  document.getElementById('roomInfo').innerText = '';
   const startModal = document.getElementById('start_modal');
   startModal.innerHTML = '';
   startModal.style.display = 'flex';
@@ -109,10 +112,10 @@ function participateTheRoom(){
   }
   postData('/moyora/room/participate', {roomNo})
   .then((r)=> {
-    alert(r.message);
     if(r.code){
       checkMyRoom();
     }
+    alert(r.message);
   });
 }
 function addReturnButton(){
@@ -165,6 +168,7 @@ function makeRoom(){
   .then((r)=>{
     const code = r.code;
     if(code){
+      document.getElementById('roomInfo').innerText = '방번호 : ' + r.roomNo;
       chooseWaySelectDestination();
     }else{
       alert(r.message);

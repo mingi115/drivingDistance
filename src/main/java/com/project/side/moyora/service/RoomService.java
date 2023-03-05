@@ -29,6 +29,7 @@ public class RoomService {
             RoomVo newRoom = roomRepository.createRoom(newGuest, paramRoomNo, pw);
             mySession.setAttribute("guestNo", newGuest.getGuestNo());
             mySession.setAttribute("roomNo", newRoom.getRoomNo());
+            result.put("roomNo", newRoom.getRoomNo());
             result.put("code", true);
         }else{
             result.put("code", false);

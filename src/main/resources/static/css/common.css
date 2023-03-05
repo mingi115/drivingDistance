@@ -34,3 +34,47 @@ body {
   align-items: center;
   flex-direction: column;
 }
+#range-input{
+  width:30px;
+}
+
+#list-wrapper{
+  align-content: center;
+  position: absolute;
+  bottom:0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100vw;
+}
+
+#list-wrapper > .show{
+  display: block;
+  height: 30vh;
+  transition-property: height;
+  transition-duration: .5s;
+  overflow: auto;
+}
+#feature-list-btn{
+  width: 20vw;
+
+}
+#feature-list{
+  display: none;
+  background-color: white;
+  width: 100vw;
+  height: 0;
+  transition-property: height;
+  transition-duration: .5s;
+  overflow: auto;
+}
+
+#feature-list ol .active{
+  border: 2px solid red;
+}
+
+
+#feature-list ol li div{
+  padding: 5px 2px;
+}
