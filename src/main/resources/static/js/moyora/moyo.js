@@ -127,10 +127,16 @@ function addReturnButton(){
 }
 
 function addGuestsInfo(guestList){
+  console.log(guestList);
   guestList.forEach((guest)=> {
     routeDictionary[guest.guestNo] = guest.movingLog.map(({x, y}) => [x, y]);
     setLineString(guest.guestNo);
+    setGuestInfoDom(guest);
   })
+}
+
+function setGuestInfoDom(guest){
+
 }
 
 function connectSocket(roomNo){
