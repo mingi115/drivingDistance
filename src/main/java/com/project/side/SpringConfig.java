@@ -13,7 +13,6 @@ public class SpringConfig {
     public RoomService roomService() {
         return new RoomService((RoomRepository) roomRepositoryService());
     }
-
     @Bean
     public RoomRepositoryService roomRepositoryService() {
         return new RoomRepository();

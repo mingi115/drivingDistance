@@ -24,12 +24,12 @@ public class RoomRepository implements RoomRepositoryService {
     }
 
     @Override
-    public void deleteRoom(long roomNo) {
+    public void deleteRoom(Long roomNo) {
         roomStore.remove(roomNo);
     }
 
     @Override
-    public RoomVo findRoom(long roomNo) {
+    public RoomVo findRoom(Long roomNo) {
         return  roomStore.get(roomNo);
     }
 

@@ -107,10 +107,11 @@ function setRoomNoInput(btnStr){
 }
 function participateTheRoom(){
   const roomNo = document.getElementById('roomNoInput').value;
+  const pwInput = document.getElementById('pwInput').value;
   if(!roomNo) {
     return;
   }
-  postData('/moyora/room/participate', {roomNo})
+  postData('/moyora/room/participate', {roomNo, pw:pwInput})
   .then((r)=> {
     if(r.code){
       checkMyRoom();
