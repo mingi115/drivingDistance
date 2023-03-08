@@ -128,7 +128,6 @@ function addReturnButton(){
 }
 
 function addGuestsInfo(guestList){
-  console.log(guestList);
   guestList.forEach((guest)=> {
     routeDictionary[guest.guestNo] = guest.movingLog.map(({x, y}) => [x, y]);
     setLineString(guest.guestNo);
@@ -184,7 +183,6 @@ function makeRoom(){
 }
 
 function roomValidate(roomNoInput, pwInput){
-  console.log('roomNo :: ', roomNoInput,'  pwInput :: ',  pwInput);
   if(!roomNoInput) {
     alert('방 번호를 입력해주세요');
     return false;

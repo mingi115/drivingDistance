@@ -46,7 +46,6 @@ public class MoyoraController {
     @PostMapping(value = "/room/create")
     public HashMap<String, Object> createRoom(HttpSession mySession,
         @RequestBody HashMap<String, String> param){
-        System.out.println(param);
         return roomService.createRoom(mySession, param);
     }
 
