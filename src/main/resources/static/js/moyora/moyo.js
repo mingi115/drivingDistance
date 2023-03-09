@@ -75,11 +75,6 @@ function setRoomNoInput(btnStr){
   startModal.style.display = 'flex';
   const wrapperDiv = document.createElement('div');
   wrapperDiv.style.textAlign = 'center';
-  const inputLabel = document.createElement('label');
-  inputLabel.innerText = '방 번호';
-  const roomNoInput = document.createElement('input');
-  roomNoInput.type = 'text';
-  roomNoInput.id = 'roomNoInput';
   const br1 = document.createElement('br');
   const pwLabel = document.createElement('label');
   pwLabel.innerText = '비밀번호';
@@ -89,14 +84,20 @@ function setRoomNoInput(btnStr){
   const br2 = document.createElement('br');
   const participateButton = document.createElement('button');
   participateButton.innerText = btnStr;
+
   if(btnStr === '참여하기' ) {
+    const inputLabel = document.createElement('label');
+    inputLabel.innerText = '방 번호';
+    const roomNoInput = document.createElement('input');
+    roomNoInput.type = 'text';
+    roomNoInput.id = 'roomNoInput';
     participateButton.addEventListener('click', participateTheRoom);
+    wrapperDiv.append(inputLabel);
+    wrapperDiv.append(roomNoInput);
   }else if(btnStr === '생성하기' ){
     participateButton.addEventListener('click', makeRoom);
   }
 
-  wrapperDiv.append(inputLabel);
-  wrapperDiv.append(roomNoInput);
   wrapperDiv.append(br1);
   wrapperDiv.append(pwLabel);
   wrapperDiv.append(pwInput);
@@ -170,7 +171,7 @@ function makeRoom(){
   const roomNoInput = document.getElementById('roomNoInput').value;
   const pwInput = document.getElementById('pwInput').value;
   if(!roomValidate(roomNoInput, pwInput)) return;
-  postData('/moyora/room/create', {roomNo : roomNoInput, pw: pwInput})
+  postData('/moyora/room/create', { pw: pwInput})
   .then((r)=>{
     const code = r.code;
     if(code){

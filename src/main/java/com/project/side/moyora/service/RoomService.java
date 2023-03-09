@@ -24,17 +24,12 @@ public class RoomService {
         HashMap<String, Object> result = new HashMap<>();
         Long paramRoomNo = Long.parseLong(param.get("roomNo"));
         String pw = param.get("pw");
-        if(roomRepository.isRoomAvailable(paramRoomNo)){
-            GuestVo newGuest = new GuestVo(0);
-            RoomVo newRoom = roomRepository.createRoom(newGuest, paramRoomNo, pw);
-            mySession.setAttribute("guestNo", newGuest.getGuestNo());
-            mySession.setAttribute("roomNo", newRoom.getRoomNo());
-            result.put("roomNo", newRoom.getRoomNo());
-            result.put("code", true);
-        }else{
-            result.put("code", false);
-            result.put("message", "이미 존재하는 방입니다.");
-        }
+        GuestVo newGuest = new GuestVo(0);
+        RoomVo newRoom = roomRepository.createRoom(newGuest, pw);
+        mySession.setAttribute("guestNo", newGuest.getGuestNo());
+        mySession.setAttribute("roomNo", newRoom.getRoomNo());
+        result.put("roomNo", newRoom.getRoomNo());
+        result.put("code", true);
         return result;
     }
 

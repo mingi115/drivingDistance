@@ -5,6 +5,8 @@ import com.project.side.moyora.vo.GuestVo;
 import com.project.side.moyora.vo.RoomVo;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +18,31 @@ public class RoomRepository implements RoomRepositoryService {
 
     HashMap<Long, RoomVo> roomStore = new HashMap<>();
     @Override
-    public RoomVo createRoom(GuestVo guest, long roomNo, String pw) {
+    public RoomVo createRoom(GuestVo guest, String pw) {
+        Long roomNo = getEmptyRoomNo();
         RoomVo newRoom = new RoomVo(roomNo, guest, pw);
         logger.debug("new room number is :: " + roomNo);
         roomStore.put(roomNo, newRoom);
         return newRoom;
+    }
+
+    public Long getEmptyRoomNo(){
+//        if (roomStore.size() == 0) return 0L;
+        Set<Long> ks = roomStore.keySet();
+        Long maxVal = ks.stream().max(Comparator.comparing(x -> x)).orElse(0L);;
+        if(maxVal + 1 == ks.size()){
+            return maxVal + 1;
+        }else{
+            Long prev = null;
+            for(Long curr : ks){
+                if(prev != null && curr - prev >1){
+                    return prev +1;
+                }
+                prev = curr;
+            }
+        }
+
+        return maxVal + 1;
     }
 
     @Override
