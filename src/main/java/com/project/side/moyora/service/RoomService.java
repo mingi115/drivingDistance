@@ -22,7 +22,6 @@ public class RoomService {
 
     public HashMap<String, Object> createRoom(HttpSession mySession, HashMap<String, String> param){
         HashMap<String, Object> result = new HashMap<>();
-        Long paramRoomNo = Long.parseLong(param.get("roomNo"));
         String pw = param.get("pw");
         GuestVo newGuest = new GuestVo(0);
         RoomVo newRoom = roomRepository.createRoom(newGuest, pw);
