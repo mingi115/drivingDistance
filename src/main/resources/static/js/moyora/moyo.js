@@ -168,9 +168,11 @@ function connectSocket(roomNo){
 }
 
 function makeRoom(){
-  const roomNoInput = document.getElementById('roomNoInput').value;
   const pwInput = document.getElementById('pwInput').value;
-  if(!roomValidate(roomNoInput, pwInput)) return;
+  if(!pwInput) {
+    alert('비밀번호를 입력 해주세요');
+    return;
+  }
   postData('/moyora/room/create', { pw: pwInput})
   .then((r)=>{
     const code = r.code;
