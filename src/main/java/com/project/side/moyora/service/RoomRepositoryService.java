@@ -8,4 +8,5 @@ public interface RoomRepositoryService {
     void deleteRoom(Long roomNo);
     RoomVo findRoom(Long roomNo);
     boolean isRoomAvailable(Long paramRoomNo);
+    GuestVo getGuestInfo(Long roonNo, Long guestId);
 }

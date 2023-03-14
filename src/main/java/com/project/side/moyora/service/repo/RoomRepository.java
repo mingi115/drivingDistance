@@ -59,4 +59,10 @@ public class RoomRepository implements RoomRepositoryService {
     public boolean isRoomAvailable(Long paramRoomNo) {
         return roomStore.get(paramRoomNo) == null;
     }
+
+    @Override
+    public GuestVo getGuestInfo(Long roomNo, Long guestId) {
+        RoomVo room = findRoom(roomNo);
+        return room.getOneGuestInfo(guestId);
+    }
 }

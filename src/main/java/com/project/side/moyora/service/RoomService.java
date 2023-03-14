@@ -95,4 +95,13 @@ public class RoomService {
         }
         return result;
     }
+
+    public HashMap<String, Object> getUserInfo(HashMap<String, String> param) {
+        HashMap<String, Object> result = new HashMap<>();
+        Long roomNo =  Long.parseLong(param.get("roomNo"));
+        Long guestId =  Long.parseLong(param.get("guestId"));
+
+        result.put("guestInfo", roomRepository.getGuestInfo(roomNo, guestId));
+        return result;
+    }
 }

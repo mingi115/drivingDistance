@@ -94,4 +94,19 @@ public class MoyoraController {
         }
         return result;
     }
+
+    @ResponseBody
+    @PostMapping(value = "/guest/getInfo")
+    public HashMap<String, Object> getGuestInfo(HttpSession mySession,
+        @RequestBody HashMap<String, String> param){
+        HashMap<String, Object> result= new HashMap<>();
+        try {
+            result = roomService.getUserInfo(param);
+            result.put("message", "getUserInfo.success");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.put("message", "getUserInfo.fail");
+        }
+        return result;
+    }
 }

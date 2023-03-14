@@ -66,4 +66,10 @@ public class RoomVo {
     public boolean comaprePassword(String pw){
         return this.password.equals(pw);
     }
+
+    public GuestVo getOneGuestInfo(Long guestId) {
+        Optional<GuestVo> og = this.guestVoList.stream()
+            .filter(x -> x.getGuestNo() == guestId).findFirst();
+        return og.orElse(null);
+    }
 }
