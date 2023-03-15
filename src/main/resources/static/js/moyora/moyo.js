@@ -157,6 +157,14 @@ function connectSocket(roomNo){
     if(!routeDictionary[callerId]) routeDictionary[callerId] = [];
     routeDictionary[callerId].push([message.longitude, message.latitude]);
     appendPointOnMapFeature(callerId, message.longitude, message.latitude);
+    if(!document.getElementById('li')) {
+      postData('/moyora/guest/getInfo', {roomNo, guestId : callerId})
+      .then((r)=>{
+        console.log(r);
+        setGuestInfoDom(r.guestInfo);
+      })
+    }
+    //
   }
 
   ws.onclose = function(e){ // 연결 종료 시 실행
