@@ -37,6 +37,8 @@ function checkMyRoom(){
       document.getElementById('roomInfo').innerText ='방번호 : ' + roomNo;
       chooseWaySelectDestination();
     }else{
+      const startModal = document.getElementById('start_modal');
+      startModal.style.display = 'none';
       document.getElementById('roomInfo').innerText = '방번호 : ' + roomNo;
       routeDictionary[myId] = [];
       setDestinateion([destination.x, destination.y]);
