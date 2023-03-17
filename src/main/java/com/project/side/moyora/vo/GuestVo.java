@@ -18,6 +18,16 @@ public class GuestVo {
     private LocalDateTime endTime;
     @JsonProperty
     private List<Coordinate> movingLog;
+    @JsonProperty
+    private String color;
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 
     public GuestVo(long guestNo){
         this.guestNo = guestNo;
