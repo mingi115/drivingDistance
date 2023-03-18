@@ -155,7 +155,7 @@ function connectSocket(roomNo){
     if(!routeDictionary[callerId]) routeDictionary[callerId] = [];
     routeDictionary[callerId].push([message.longitude, message.latitude]);
     appendPointOnMapFeature(callerId, message.longitude, message.latitude);
-    if(!document.getElementById('li')) {
+    if(!document.getElementById(`guest-${callerId}`)) {
       postData('/moyora/guest/getInfo', {roomNo, guestId : callerId})
       .then((r)=>{
         console.log(r);
