@@ -104,4 +104,12 @@ public class RoomService {
         result.put("guestInfo", roomRepository.getGuestInfo(roomNo, guestId));
         return result;
     }
+
+    public GuestVo setColorOnGuest(HashMap<String, String> param,
+        HttpSession mySession) {
+        long roomNo = (long) mySession.getAttribute("roomNo");
+        long guestNo = (long) mySession.getAttribute("guestNo");
+        RoomVo myRoom = roomRepository.findRoom(roomNo);
+        return myRoom.setColorOnGuest(guestNo, param.get("color"));
+    }
 }

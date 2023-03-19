@@ -72,4 +72,15 @@ public class RoomVo {
             .filter(x -> x.getGuestNo() == guestId).findFirst();
         return og.orElse(null);
     }
+
+    public GuestVo setColorOnGuest(long guestNo, String color) {
+        Optional<GuestVo> optMe =
+            guestVoList.stream().filter(guestVo -> guestVo.getGuestNo() == guestNo).findFirst();
+        if(optMe.isPresent()){
+            GuestVo me = optMe.get();
+            me.setColor(color);
+            return me;
+        }
+        return null;
+    }
 }

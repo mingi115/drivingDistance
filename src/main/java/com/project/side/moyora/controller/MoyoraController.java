@@ -109,4 +109,19 @@ public class MoyoraController {
         }
         return result;
     }
+
+    @ResponseBody
+    @PostMapping(value = "/guest/setColor")
+    public HashMap<String, Object> setColor(HttpSession mySession,
+        @RequestBody HashMap<String, String> param){
+        HashMap<String, Object> result= new HashMap<>();
+        try {
+            result.put("guest",roomService.setColorOnGuest(param, mySession));
+            result.put("message", "setColor.success");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.put("message", "setColor.fail");
+        }
+        return result;
+    }
 }
