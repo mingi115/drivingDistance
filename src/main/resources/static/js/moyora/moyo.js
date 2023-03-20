@@ -137,7 +137,13 @@ function addGuestsInfo(guestList){
 }
 
 function setGuestInfoDom(guest){
+  const fl = document.getElementById('feature-list');
+  const ol = fl.querySelector('ol');
 
+  const li = document.createElement('li');
+  li.id = `guest-${guest.guestNo}`;
+
+  ol.append(li);
 }
 
 function connectSocket(roomNo){
@@ -361,12 +367,21 @@ function setLineString(id) {
   const feature = new ol.Feature({
     geometry: line,
   });
-  feature.setStyle(getLineStringStyle());
+
+  let color = generateRandomColor();
+  // if(guest?.color){
+  //   color = guest.color;
+  // }else{
+  //   color = generateRandomColor();
+  //   postData('moyora/guest/setColor', {color})
+  //   .then(r => console.log(r))
+  // }
+
   feature.setId(id);
+  feature.setStyle(getLineStringStyle(color));
   vectorSource.addFeature(feature);
 }
-function getLineStringStyle(){
-  const color = generateRandomColor();
+function getLineStringStyle(color){
   return [
     new ol.style.Style({
       stroke: new ol.style.Stroke({
