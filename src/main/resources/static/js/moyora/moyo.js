@@ -130,7 +130,8 @@ function addReturnButton(){
 
 function addGuestsInfo(guestList){
   guestList.forEach((guest)=> {
-    routeDictionary[guest.guestNo] = guest.movingLog.map(({x, y}) => [x, y]);
+    routeDictionary[guest.guestNo]['color'] = guest.color;
+    routeDictionary[guest.guestNo]['coordLog'] = guest.movingLog.map(({x, y}) => [x, y]);
     setLineString(guest.guestNo);
     setGuestInfoDom(guest);
   })
@@ -158,8 +159,8 @@ function connectSocket(roomNo){
     const message = JSON.parse(e.data);
     const callerId = message.id;
 
-    if(!routeDictionary[callerId]) routeDictionary[callerId] = [];
-    routeDictionary[callerId].push([message.longitude, message.latitude]);
+    //if(!routeDictionary[callerId]) routeDictionary[callerId] = {};
+    routeDictionary[callerId]['coordLog'].push([message.longitude, message.latitude]);
     appendPointOnMapFeature(callerId, message.longitude, message.latitude);
     if(!document.getElementById(`guest-${callerId}`)) {
       postData('/moyora/guest/getInfo', {roomNo, guestId : callerId})
@@ -299,7 +300,7 @@ function setDestinationOnRoom(coordinate){
     startModal.style.display = 'none';
     connectSocket(room.roomNo);
     myId = room.newGuestNo;
-    routeDictionary[myId] = [];
+    // routeDictionary[myId] = [];
   })
 }
 
@@ -323,7 +324,7 @@ function loggingLocation() {
     const longitude = position.coords.longitude;
     const latitude  = position.coords.latitude;
 
-    routeDictionary[myId].push([longitude, latitude]) ;
+    routeDictionary[myId]['coordLog'].push([longitude, latitude]) ;
     appendPointOnMapFeature(myId, longitude, latitude);
 
     const data = {
