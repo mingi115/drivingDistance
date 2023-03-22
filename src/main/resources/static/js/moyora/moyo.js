@@ -159,7 +159,7 @@ function connectSocket(roomNo){
     const message = JSON.parse(e.data);
     const callerId = message.id;
 
-    //if(!routeDictionary[callerId]) routeDictionary[callerId] = {};
+    if(!routeDictionary[callerId]) routeDictionary[callerId] = {color:{}, coordLog:[]};
     routeDictionary[callerId]['coordLog'].push([message.longitude, message.latitude]);
     appendPointOnMapFeature(callerId, message.longitude, message.latitude);
     if(!document.getElementById(`guest-${callerId}`)) {
@@ -300,7 +300,7 @@ function setDestinationOnRoom(coordinate){
     startModal.style.display = 'none';
     connectSocket(room.roomNo);
     myId = room.newGuestNo;
-    // routeDictionary[myId] = [];
+    if(!routeDictionary[myId]) routeDictionary[myId] = {color:{}, coordLog:[]};
   })
 }
 
@@ -369,14 +369,13 @@ function setLineString(id) {
     geometry: line,
   });
 
-  let color = generateRandomColor();
-  // if(guest?.color){
-  //   color = guest.color;
-  // }else{
-  //   color = generateRandomColor();
-  //   postData('moyora/guest/setColor', {color})
-  //   .then(r => console.log(r))
-  // }
+
+  let color = routeDictionary[id]['color'];
+  if(!color){
+    color = generateRandomColor();
+    postData('/moyora/guest/setColor', {color})
+    .then(r => console.log(r))
+  }
 
   feature.setId(id);
   feature.setStyle(getLineStringStyle(color));
