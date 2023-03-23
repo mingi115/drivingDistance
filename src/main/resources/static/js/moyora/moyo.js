@@ -159,7 +159,7 @@ function connectSocket(roomNo){
     const message = JSON.parse(e.data);
     const callerId = message.id;
 
-    if(!routeDictionary[callerId]) routeDictionary[callerId] = {color:{}, coordLog:[]};
+    if(!routeDictionary[callerId]) routeDictionary[callerId] = {color:'', coordLog:[]};
     routeDictionary[callerId]['coordLog'].push([message.longitude, message.latitude]);
     appendPointOnMapFeature(callerId, message.longitude, message.latitude);
     if(!document.getElementById(`guest-${callerId}`)) {
@@ -330,7 +330,8 @@ function loggingLocation() {
     const data = {
       id : myId,
       longitude : longitude,
-      latitude : latitude
+      latitude : latitude,
+      color : routeDictionary[myId]['color'],
     }
     if(ws.readyState === 1){
       ws.send(JSON.stringify(data));
@@ -364,15 +365,15 @@ function appendPointOnServer(longitude, latitude){
 
 
 function setLineString(id) {
-  const line = new ol.geom.LineString(routeDictionary[id]);
+  const line = new ol.geom.LineString(routeDictionary[id]['coordLog']);
   const feature = new ol.Feature({
     geometry: line,
   });
 
-
   let color = routeDictionary[id]['color'];
   if(!color){
     color = generateRandomColor();
+    routeDictionary[id]['color'] = color;
     postData('/moyora/guest/setColor', {color})
     .then(r => console.log(r))
   }
