@@ -162,13 +162,13 @@ function connectSocket(roomNo){
     if(!routeDictionary[callerId]) routeDictionary[callerId] = {color:'', coordLog:[]};
     routeDictionary[callerId]['coordLog'].push([message.longitude, message.latitude]);
     appendPointOnMapFeature(callerId, message.longitude, message.latitude);
-    if(!document.getElementById(`guest-${callerId}`)) {
-      postData('/moyora/guest/getInfo', {roomNo, guestId : callerId})
-      .then((r)=>{
-        console.log(r);
-        setGuestInfoDom(r.guestInfo);
-      })
-    }
+    // if(!document.getElementById(`guest-${callerId}`)) {
+    //   postData('/moyora/guest/getInfo', {roomNo, guestId : callerId})
+    //   .then((r)=>{
+    //     console.log(r);
+    //     setGuestInfoDom(r.guestInfo);
+    //   })
+    // }
     //
   }
 
@@ -375,7 +375,7 @@ function setLineString(id) {
     color = generateRandomColor();
     routeDictionary[id]['color'] = color;
     postData('/moyora/guest/setColor', {color})
-    .then(r => console.log(r))
+    .then(r => console.log(r));
   }
 
   feature.setId(id);
