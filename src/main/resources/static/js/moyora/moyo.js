@@ -112,7 +112,8 @@ function participateTheRoom(){
   const roomNo = document.getElementById('roomNoInput').value;
   const pwInput = document.getElementById('pwInput').value;
   if(!roomValidate(roomNo, pwInput)) return;
-  postData('/moyora/room/participate', {roomNo, pw:pwInput})
+  postData('/moyora/room/participate',
+      {roomNo, pw:pwInput, color:generateRandomColor()})
   .then((r)=> {
     if(r.code){
       checkMyRoom();
@@ -129,6 +130,7 @@ function addReturnButton(){
 }
 
 function addGuestsInfo(guestList){
+  console.log('addGuestsInfo', guestList);
   guestList.forEach((guest)=> {
     routeDictionary[guest.guestNo]['color'] = guest.color;
     routeDictionary[guest.guestNo]['coordLog'] = guest.movingLog.map(({x, y}) => [x, y]);
@@ -188,7 +190,8 @@ function makeRoom(){
     alert('비밀번호를 입력 해주세요');
     return;
   }
-  postData('/moyora/room/create', { pw: pwInput})
+
+  postData('/moyora/room/create', { pw: pwInput, color:generateRandomColor()})
   .then((r)=>{
     const code = r.code;
     if(code){

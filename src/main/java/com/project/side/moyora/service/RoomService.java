@@ -23,7 +23,9 @@ public class RoomService {
     public HashMap<String, Object> createRoom(HttpSession mySession, HashMap<String, String> param){
         HashMap<String, Object> result = new HashMap<>();
         String pw = param.get("pw");
+        String color = param.get("color");
         GuestVo newGuest = new GuestVo(0);
+        newGuest.setColor(color);
         RoomVo newRoom = roomRepository.createRoom(newGuest, pw);
         mySession.setAttribute("guestNo", newGuest.getGuestNo());
         mySession.setAttribute("roomNo", newRoom.getRoomNo());
@@ -84,6 +86,7 @@ public class RoomService {
             RoomVo room = roomRepository.findRoom(paramRoomNo);
             if(room.comaprePassword(pw)){
                 GuestVo gv = room.setNewGuest();
+                gv.setColor(param.get("color"));
                 mySession.setAttribute("roomNo", room.getRoomNo());
                 mySession.setAttribute("guestNo", gv.getGuestNo());
                 result.put("code", true);
