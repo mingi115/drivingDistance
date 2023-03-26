@@ -140,12 +140,18 @@ function addGuestsInfo(guestList){
 }
 
 function setGuestInfoDom(guest){
+  console.log('guest',guest);
   const fl = document.getElementById('feature-list');
   const ol = fl.querySelector('ol');
 
   const li = document.createElement('li');
   li.id = `guest-${guest.guestNo}`;
 
+  const colorInput = document.createElement('input');
+  colorInput.type = 'color';
+  colorInput.value = guest.color;
+
+  li.append(colorInput);
   ol.append(li);
 }
 
@@ -265,6 +271,7 @@ function getDestinationFeature(coord){
 function setDestinateion(coord){
   const feature = getDestinationFeature(coord);
   vectorSource.addFeature(feature);
+
 }
 function targetSetMode() {
   const startModal = document.getElementById('start_modal');
@@ -304,6 +311,7 @@ function setDestinationOnRoom(coordinate){
     connectSocket(room.roomNo);
     myId = room.newGuestNo;
     if(!routeDictionary[myId]) routeDictionary[myId] = {color:{}, coordLog:[]};
+    addGuestsInfo(res.room.guestVoList);
   })
 }
 
