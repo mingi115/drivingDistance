@@ -147,11 +147,24 @@ function setGuestInfoDom(guest){
   const li = document.createElement('li');
   li.id = `guest-${guest.guestNo}`;
 
+  const noInput = document.createElement('input');
+  noInput.type = 'text';
+  noInput.value = guest.guestNo;
+  noInput.disabled = true;
+  noInput.style.width = "30px";
+  const noLabel = document.createElement('label');
+  noLabel.innerText = '번호 :';
+  noLabel.append(noInput);
+
   const colorInput = document.createElement('input');
   colorInput.type = 'color';
   colorInput.value = guest.color;
+  const colorLabel = document.createElement('label');
+  colorLabel.innerText = '색상 :';
+  colorLabel.append(colorInput);
 
-  li.append(colorInput);
+  li.append(noLabel);
+  li.append(colorLabel);
   ol.append(li);
 }
 
