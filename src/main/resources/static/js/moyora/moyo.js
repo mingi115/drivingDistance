@@ -142,19 +142,32 @@ function addGuestsInfo(guestList){
 function setGuestInfoDom(guest){
   console.log('guest',guest);
   const fl = document.getElementById('feature-list');
-  const ol = fl.querySelector('ol');
+  const ul = fl.querySelector('ul');
 
   const li = document.createElement('li');
   li.id = `guest-${guest.guestNo}`;
+
+  const noP = document.createElement('p');
+  noP.innerText = `번호 : ${guest.guestNo} `;
+  noP.style.display = 'inline-block';
 
   const noInput = document.createElement('input');
   noInput.type = 'text';
   noInput.value = guest.guestNo;
   noInput.disabled = true;
-  noInput.style.width = "30px";
+  noInput.style.width = "max-content";
   const noLabel = document.createElement('label');
   noLabel.innerText = '번호 :';
   noLabel.append(noInput);
+
+  const startTimeInput = document.createElement('input');
+  startTimeInput.type = 'text';
+  startTimeInput.value = guest.startTime;
+  startTimeInput.disabled = true;
+  startTimeInput.style.width = "max-content";
+  const startTimeLabel = document.createElement('label');
+  startTimeLabel.innerText = '출발시각 :';
+  startTimeLabel.append(startTimeInput);
 
   const colorInput = document.createElement('input');
   colorInput.type = 'color';
@@ -163,9 +176,10 @@ function setGuestInfoDom(guest){
   colorLabel.innerText = '색상 :';
   colorLabel.append(colorInput);
 
-  li.append(noLabel);
+  li.append(noP);
   li.append(colorLabel);
-  ol.append(li);
+  li.append(startTimeLabel);
+  ul.append(li);
 }
 
 function connectSocket(roomNo){

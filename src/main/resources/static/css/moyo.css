@@ -5,3 +5,7 @@
   left: 40px;
   font-size: 20px;
 }
+
+#feature-list > ul > li > * {
+  margin-right: 10px;
+}
