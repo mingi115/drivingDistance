@@ -71,12 +71,19 @@ function getOutMyRoom(){
   postData('/moyora/room/out')
   .then((r)=>{console.log(r)});
 }
+function enterkey(e, callbackFunc) {
+  console.log(e);
+  if (e.keyCode === 13) {
+    // 엔터키가 눌렸을 때
+  }
+}
 function setRoomNoInput(btnStr){
   const startModal = document.getElementById('start_modal');
   startModal.innerHTML = '';
   startModal.style.display = 'flex';
   const wrapperDiv = document.createElement('div');
   wrapperDiv.style.textAlign = 'center';
+
   const br1 = document.createElement('br');
   const pwLabel = document.createElement('label');
   pwLabel.innerText = '비밀번호';
@@ -96,8 +103,18 @@ function setRoomNoInput(btnStr){
     participateButton.addEventListener('click', participateTheRoom);
     wrapperDiv.append(inputLabel);
     wrapperDiv.append(roomNoInput);
+    wrapperDiv.addEventListener('keypress', function(e){
+      if(e.code === 'Enter'){
+        participateTheRoom();
+      }
+    });
   }else if(btnStr === '생성하기' ){
     participateButton.addEventListener('click', makeRoom);
+    wrapperDiv.addEventListener('keypress', function(e){
+      if(e.code === 'Enter'){
+        makeRoom();
+      }
+    });
   }
 
   wrapperDiv.append(br1);
@@ -151,15 +168,6 @@ function setGuestInfoDom(guest){
   noP.innerText = `번호 : ${guest.guestNo} `;
   noP.style.display = 'inline-block';
 
-  const noInput = document.createElement('input');
-  noInput.type = 'text';
-  noInput.value = guest.guestNo;
-  noInput.disabled = true;
-  noInput.style.width = "max-content";
-  const noLabel = document.createElement('label');
-  noLabel.innerText = '번호 :';
-  noLabel.append(noInput);
-
   const startTimeInput = document.createElement('input');
   startTimeInput.type = 'text';
   startTimeInput.value = guest.startTime;
@@ -168,6 +176,15 @@ function setGuestInfoDom(guest){
   const startTimeLabel = document.createElement('label');
   startTimeLabel.innerText = '출발시각 :';
   startTimeLabel.append(startTimeInput);
+
+  const endTimeInput = document.createElement('input');
+  endTimeInput.type = 'text';
+  endTimeInput.value = guest.endTime;
+  endTimeInput.disabled = true;
+  endTimeInput.style.width = "max-content";
+  const endTimeLabel = document.createElement('label');
+  endTimeLabel.innerText = '도착시각 :';
+  endTimeLabel.append(endTimeInput);
 
   const colorInput = document.createElement('input');
   colorInput.type = 'color';
@@ -179,6 +196,7 @@ function setGuestInfoDom(guest){
   li.append(noP);
   li.append(colorLabel);
   li.append(startTimeLabel);
+  li.append(endTimeLabel);
   ul.append(li);
 }
 
