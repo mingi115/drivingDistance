@@ -168,20 +168,24 @@ function setGuestInfoDom(guest){
   noP.innerText = `번호 : ${guest.guestNo} `;
   noP.style.display = 'inline-block';
 
+  const startTime = new Date(guest.startTime);
   const startTimeInput = document.createElement('input');
   startTimeInput.type = 'text';
-  startTimeInput.value = guest.startTime;
+  startTimeInput.value = `${startTime.getHours()}시`
+    + ` ${startTime.getMinutes()}분 ${startTime.getSeconds()}초`;
   startTimeInput.disabled = true;
-  startTimeInput.style.width = "max-content";
+  startTimeInput.style.width = `${startTimeInput.value.length * 9}px`;
   const startTimeLabel = document.createElement('label');
   startTimeLabel.innerText = '출발시각 :';
   startTimeLabel.append(startTimeInput);
 
+  const endTime = guest.endTime ? new Date(guest.endTime) : null;
   const endTimeInput = document.createElement('input');
   endTimeInput.type = 'text';
-  endTimeInput.value = guest.endTime;
+  endTimeInput.value = endTime ? `${endTime.getHours()}시`
+      + ` ${endTime.getMinutes()}분 ${endTime.getSeconds()}초` : '';
   endTimeInput.disabled = true;
-  endTimeInput.style.width = "max-content";
+  endTimeInput.style.width = `${endTimeInput.value.length * 9}px`;
   const endTimeLabel = document.createElement('label');
   endTimeLabel.innerText = '도착시각 :';
   endTimeLabel.append(endTimeInput);
